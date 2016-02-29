@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private Button createButton;
     private Button settingsButton;
     private Button leadButton;
+    private DBManager dbm;
     public static final String LEVEL = "LEVEL";
     private int level;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         createButton = (Button)findViewById(R.id.createButton);
         settingsButton = (Button)findViewById(R.id.settingsButton);
         leadButton = (Button)findViewById(R.id.leadButton);
+        dbm = new DBManager(getBaseContext());
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override

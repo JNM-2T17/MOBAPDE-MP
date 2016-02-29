@@ -17,7 +17,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String SCHEMA = "db_shuffle";
 
     public DBManager(Context context) {
-        super(context, SCHEMA, null, 2);
+        super(context, SCHEMA, null, 3);
     }
 
     @Override
@@ -36,22 +36,25 @@ public class DBManager extends SQLiteOpenHelper {
                 "    PRIMARY KEY(_playlistId,_song)," +
                 "    FOREIGN KEY (_playlistId) REFERENCES sh_playlist(_id)" +
                 ");");
-        db.execSQL("CREATE TABLE IF NOT EXISTS sh_score (" +
-                "\t_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "    artist TEXT," +
-                "    playlistId INTEGER," +
-                "    score INTEGER NOT NULL," +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + Score.TABLE + " (" +
+                "    " + Score.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "    " + Score.COLUMN_ARTIST + " TEXT," +
+                "    " + Score.COLUMN_PLAYLIST + " INTEGER," +
+                "    " + Score.COLUMN_SCORE + " INTEGER NOT NULL," +
                 "    status INTEGER DEFAULT 1," +
                 "    dateAdded DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                "    FOREIGN KEY(playlistId) REFERENCES sh_playlist(_id)" +
+                "    FOREIGN KEY(" + Score.COLUMN_PLAYLIST + ") " +
+                "       REFERENCES sh_playlist(" + Playlist.COLUMN_ID + ")" +
                 ");");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS " + Playlist.TABLE + ";" +
-                        "DROP TABLE IF EXISTS " + Playlist.SUB_TABLE + ";" +
-                        "DROP TABLE IF EXISTS sh_score";
+        String sql = "DROP TABLE IF EXISTS " + Playlist.TABLE + ";";
+        db.execSQL(sql);
+        sql = "DROP TABLE IF EXISTS " + Playlist.SUB_TABLE + ";";
+        db.execSQL(sql);
+        sql = "DROP TABLE IF EXISTS " + Score.TABLE;
         db.execSQL(sql);
         onCreate(db);
     }
@@ -60,12 +63,12 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name",playlistName);
-        long id = db.insert("sh_playlist",null,cv);
+        long id = db.insert(Playlist.TABLE,null,cv);
         cv = new ContentValues();
-        cv.put("_playlistId", id);
+        cv.put(Playlist.SUB_COLUMN_ID, id);
         for(String s: songs) {
-            cv.put("_song",s);
-            db.insert("sh_playlist_songs",null,cv);
+            cv.put(Playlist.SUB_COLUMN_SONG,s);
+            db.insert(Playlist.SUB_TABLE, null, cv);
         }
         return id;
     }
@@ -83,7 +86,7 @@ public class DBManager extends SQLiteOpenHelper {
             name = c.getString(c.getColumnIndex("name"));
             ArrayList<String> songs = new ArrayList<String>();
             do {
-                songs.add(c.getString(c.getColumnIndex("_song")));
+                songs.add(c.getString(c.getColumnIndex(Playlist.SUB_COLUMN_SONG)));
             }while(c.moveToNext());
             return new Playlist(name,songs.toArray(new String[1]));
         } else {

@@ -13,6 +13,12 @@ public class CreatePlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_playlist);
         dbm = new DBManager(getBaseContext());
+//        long id = dbm.addPlaylist("Custom1",new String[] {
+//                "Victorious",
+//                "Don't Threaten Me With A Good Time",
+//                "Hallelujah",
+//                "Emperor's New Clothes"
+//        });
         dbm.getPlayList(1);
     }
 }

@@ -17,7 +17,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String SCHEMA = "db_shuffle";
 
     public DBManager(Context context) {
-        super(context, SCHEMA, null, 3);
+        super(context, SCHEMA, null, 4);
     }
 
     @Override
@@ -40,6 +40,8 @@ public class DBManager extends SQLiteOpenHelper {
                 "    " + Score.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "    " + Score.COLUMN_ARTIST + " TEXT," +
                 "    " + Score.COLUMN_PLAYLIST + " INTEGER," +
+                "    " + Score.COLUMN_ALBUM + " TEXT NOT NULL," +
+                "    " + Score.COLUMN_TYPE + " INTEGER NOT NULL," +
                 "    " + Score.COLUMN_SCORE + " INTEGER NOT NULL," +
                 "    status INTEGER DEFAULT 1," +
                 "    dateAdded DATETIME DEFAULT CURRENT_TIMESTAMP," +

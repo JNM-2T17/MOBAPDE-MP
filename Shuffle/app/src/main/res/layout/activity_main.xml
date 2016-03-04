@@ -12,9 +12,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:src="@drawable/wat"
-        android:id="@+id/logo" />
+        android:id="@+id/logo"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,19 +29,19 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2.5dp"
+        android:layout_marginBottom="2.5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="CREATE PLAYLIST"
         android:textSize="30sp"
-        android:padding="5dp"
+        android:padding="15dp"
         android:id="@+id/createButton"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2.5dp"
+        android:layout_marginBottom="2.5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="SETTINGS"
@@ -51,7 +51,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2.5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="LEADERBOARD"

@@ -35,7 +35,7 @@
         android:layout_marginRight="10dp"
         android:text="CREATE PLAYLIST"
         android:textSize="30sp"
-        android:padding="15dp"
+        android:padding="5dp"
         android:id="@+id/createButton"/>
     <Button
         android:layout_width="match_parent"

@@ -14,15 +14,18 @@ public class Playlist {
     public static final String SUB_TABLE = "sh_playlist_songs";
     public static final String SUB_COLUMN_ID = "_playlistId";
     public static final String SUB_COLUMN_SONG = "_song";
+    private int id;
     private String name;
     private ArrayList<String> songs;
 
-    public Playlist(String name) {
+    public Playlist(int id, String name) {
+        this.id = id;
         this.name = name;
         this.songs = new ArrayList<String>();
     }
 
-    public Playlist(String name, String[] songs) {
+    public Playlist(int id, String name, String[] songs) {
+        this.id = id;
         this.name = name;
         Log.i("Playlist",name);
         this.songs = new ArrayList<String>();
@@ -31,6 +34,8 @@ public class Playlist {
             this.songs.add(song);
         }
     }
+
+    public long id() { return id; }
 
     public String name() {
         return name;

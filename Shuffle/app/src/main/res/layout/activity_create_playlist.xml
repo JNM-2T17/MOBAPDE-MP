@@ -8,5 +8,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.mobapde.selina.shuffle.CreatePlaylistActivity">
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addButton"
+        android:text="Add Playlist"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/playlistView"
+        android:layout_below="@id/addButton">
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

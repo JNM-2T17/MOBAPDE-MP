@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -64,7 +62,7 @@ public class DBManager extends SQLiteOpenHelper {
     public long addPlaylist(String playlistName,String[] songs) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("name",playlistName);
+        cv.put("name", playlistName);
         long id = db.insert(Playlist.TABLE,null,cv);
         cv = new ContentValues();
         cv.put(Playlist.SUB_COLUMN_ID, id);
@@ -77,22 +75,32 @@ public class DBManager extends SQLiteOpenHelper {
 
     public Playlist getPlayList(long id) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT " + Playlist.COLUMN_NAME + ", " + Playlist.SUB_COLUMN_SONG +
-                                " FROM " + Playlist.TABLE + " P INNER JOIN " +
-                                Playlist.SUB_TABLE + " PS " +
-                                "ON P._id = PS." + Playlist.SUB_COLUMN_ID
-                                        + " AND P.status = 1 AND PS.status = 1 " +
+        Cursor c = db.rawQuery("SELECT " + Playlist.COLUMN_ID + ", " + Playlist.COLUMN_NAME + ", "
+                                + Playlist.SUB_COLUMN_SONG + " FROM " + Playlist.TABLE
+                                + " P INNER JOIN " + Playlist.SUB_TABLE + " PS " + "ON P._id = PS."
+                                + Playlist.SUB_COLUMN_ID + " AND P.status = 1 AND PS.status = 1 " +
                                 "WHERE " + Playlist.COLUMN_ID + " = ?", new String[]{id + ""});
         String name;
         if( c.moveToFirst() ) {
-            name = c.getString(c.getColumnIndex("name"));
+            id = c.getInt(c.getColumnIndex(Playlist.COLUMN_ID));
+            name = c.getString(c.getColumnIndex(Playlist.COLUMN_NAME));
             ArrayList<String> songs = new ArrayList<String>();
             do {
                 songs.add(c.getString(c.getColumnIndex(Playlist.SUB_COLUMN_SONG)));
             }while(c.moveToNext());
-            return new Playlist(name,songs.toArray(new String[1]));
+            return new Playlist((int)id,name,songs.toArray(new String[0]));
         } else {
             return null;
         }
+    }
+
+    public Cursor getPlaylists() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(Playlist.TABLE,new String[]{
+                Playlist.COLUMN_ID,
+                Playlist.COLUMN_NAME
+        },"status = ?",new String[]{"1"},null,null,Playlist.COLUMN_NAME);
+        return c;
     }
 }

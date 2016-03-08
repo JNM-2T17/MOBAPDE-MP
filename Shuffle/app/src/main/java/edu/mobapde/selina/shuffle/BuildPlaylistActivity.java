@@ -1,13 +1,17 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class BuildPlaylistActivity extends AppCompatActivity {
+public class BuildPlaylistActivity extends AppCompatActivity
+                                    implements SongFragment.OnFragmentInteractionListener,
+                                                AlbumFragment.OnFragmentInteractionListener,
+                                                ArtistFragment.OnFragmentInteractionListener {
     private Playlist p;
     private DBManager dbm;
 
@@ -36,5 +40,15 @@ public class BuildPlaylistActivity extends AppCompatActivity {
             playlistField.setText(pName);
         }
 
+    }
+
+    @Override
+    public void onFragmentInteraction(String source, String select) {
+        //if from song
+        //mark as selected or unselected
+        //if from album
+        //start new songfragment for that album
+        //if from artist
+        //start new albumfragment for that artist
     }
 }

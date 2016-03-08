@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,15 +39,13 @@ public class SongFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SongFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SongFragment newInstance(String param1, String param2) {
+    public static SongFragment newInstance(String param1) {
         SongFragment fragment = new SongFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +55,15 @@ public class SongFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        //make these attributes
+        MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
+        Cursor c;
+        if( mParam1 == null ) {
+            c = mp.getAllSongs();
+        } else {
+            //get songs in album
+            //c = mp.getSongsInAlbum();
         }
     }
 

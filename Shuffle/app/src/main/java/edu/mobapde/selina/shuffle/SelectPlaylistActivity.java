@@ -1,5 +1,6 @@
 package edu.mobapde.selina.shuffle;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -36,5 +37,15 @@ public class SelectPlaylistActivity extends AppCompatActivity {
             default:
         }
 
+    }
+
+    public void startGame(int mode) {
+        if( mode == 0 ) {
+            Intent timeAttack = new Intent(getBaseContext(),TimeAttack.class);
+            startActivity(timeAttack);
+        } else {
+            Intent songRush = new Intent(getBaseContext(),SongRush.class);
+            startActivity(songRush);
+        }
     }
 }

@@ -1,13 +1,17 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,31 +25,37 @@ import android.view.ViewGroup;
 public class SongFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ALBUM = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String albumName;
+
+    private RecyclerView songView;
+
+    private List<Song> songs;
+
+    private SongAdapter sa;
 
     private OnFragmentInteractionListener mListener;
 
     public SongFragment() {
         // Required empty public constructor
+        songs = new ArrayList<Song>();
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param album Parameter 1.
      * @return A new instance of fragment SongFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SongFragment newInstance(String param1) {
+    public static SongFragment newInstance(String album) {
         SongFragment fragment = new SongFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ALBUM, album);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,36 +64,54 @@ public class SongFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            albumName = getArguments().getString(ALBUM);
         }
         //make these attributes
         MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
-        Cursor c;
-        if( mParam1 == null ) {
-            c = mp.getAllSongs();
+
+        if( albumName == null ) {
+            songs = mp.getAllSongs();
         } else {
             //get songs in album
-            //c = mp.getSongsInAlbum();
+            songs = mp.getSongsIn(albumName);
         }
+
+        sa = new SongAdapter(songs);
+        sa.setListener(new SongAdapter.OnClickListener() {
+
+            @Override
+            public void onSongClick(long id, boolean checked) {
+                onButtonPressed(id, checked);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_song, container, false);
+        View v = inflater.inflate(R.layout.fragment_song, container, false);
+        songView = (RecyclerView)v.findViewById(R.id.songView);
+        songView.setAdapter(sa); //change this later or else
+        songView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(long songId,boolean checked) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(songId, checked);
         }
+    }
+
+    public void setSongs(ArrayList<Long> songs) {
+        sa.setSelected(songs);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.i("SongFragment","ATTACHING");
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -110,6 +138,6 @@ public class SongFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(long songId, boolean checked);
     }
 }

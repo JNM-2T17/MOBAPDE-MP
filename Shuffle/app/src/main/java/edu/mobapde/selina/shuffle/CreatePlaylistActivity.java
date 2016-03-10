@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 public class CreatePlaylistActivity extends AppCompatActivity {
@@ -36,6 +37,15 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                 startActivity(editPlaylist);
             }
         });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent buildPlaylist = new Intent(getBaseContext(),BuildPlaylistActivity.class);
+                startActivity(buildPlaylist);
+            }
+        });
+
         playlistView.setAdapter(pa);
         playlistView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
     }

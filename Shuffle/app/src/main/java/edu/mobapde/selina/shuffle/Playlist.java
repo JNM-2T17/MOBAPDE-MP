@@ -16,21 +16,21 @@ public class Playlist {
     public static final String SUB_COLUMN_SONG = "_song";
     private int id;
     private String name;
-    private ArrayList<String> songs;
+    private ArrayList<Long> songs;
 
     public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
-        this.songs = new ArrayList<String>();
+        this.songs = new ArrayList<Long>();
     }
 
-    public Playlist(int id, String name, String[] songs) {
+    public Playlist(int id, String name, Long[] songs) {
         this.id = id;
         this.name = name;
         Log.i("Playlist",name);
-        this.songs = new ArrayList<String>();
-        for(String song: songs) {
-            Log.i("Playlist",song);
+        this.songs = new ArrayList<Long>();
+        for(Long song: songs) {
+            Log.i("Playlist",song + "");
             this.songs.add(song);
         }
     }
@@ -41,7 +41,9 @@ public class Playlist {
         return name;
     }
 
-    public String song(int index) {
+    public Long song(int index) {
         return songs.get(index);
     }
+
+    public int size() { return songs.size(); }
 }

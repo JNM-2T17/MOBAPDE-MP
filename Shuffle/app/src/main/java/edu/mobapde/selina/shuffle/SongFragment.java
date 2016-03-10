@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class SongFragment extends Fragment {
     private String albumName;
 
     private RecyclerView songView;
+    private Button backButton;
 
     private List<Song> songs;
 
@@ -94,6 +96,14 @@ public class SongFragment extends Fragment {
         songView = (RecyclerView)v.findViewById(R.id.songView);
         songView.setAdapter(sa); //change this later or else
         songView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
+
+        backButton = (Button)v.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.back(BuildPlaylistActivity.SONG);
+            }
+        });
         return v;
     }
 
@@ -139,5 +149,6 @@ public class SongFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(long songId, boolean checked);
+        void back(int source);
     }
 }

@@ -2,6 +2,7 @@ package edu.mobapde.selina.shuffle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class BuildPlaylistActivity extends AppCompatActivity
                                 implements SongFragment.OnFragmentInteractionListener,
-                                            ArtistFragment.OnFragmentInteractionListener,
-                                            AlbumFragment.OnFragmentInteractionListener {
+                                            ArtistFragment.OnFragmentInteractionListener {
     public static final int ALBUM = 0;
     public static final int ARTIST = 1;
     public static final int SONG = 2;
@@ -28,8 +29,8 @@ public class BuildPlaylistActivity extends AppCompatActivity
     private Button artistButton;
 
     private SongFragment mainSongFragment;
-
-    private int active;
+    private Stack<Integer> active;
+    private Stack<Fragment> fragmentStack;
 
     private int albumStat;
     private AlbumFragment mainAlbumFragment;
@@ -59,6 +60,7 @@ public class BuildPlaylistActivity extends AppCompatActivity
         artistStat = ARTIST;
 
         mainSongFragment = SongFragment.newInstance(null);
+        fragmentStack.push(mainSongFragment);
 
         songs = new ArrayList<Long>();
 
@@ -78,23 +80,55 @@ public class BuildPlaylistActivity extends AppCompatActivity
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                active = SONG;
+                active.push(SONG);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.buildFragment, mainSongFragment).commit();
+                fragmentStack.push(mainSongFragment);
             }
         });
 
         albumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                active = ALBUM;
+                active.push(ALBUM);
+                switch(albumStat) {
+                    case ALBUM:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment, mainAlbumFragment).commit();
+                        fragmentStack.push(mainAlbumFragment);
+                        break;
+                    case SONG:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment, albumSongFragment).commit();
+                        fragmentStack.push(albumSongFragment);
+                        break;
+                    default:
+                }
             }
         });
 
         artistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                active = ARTIST;
+                active.push(ARTIST);
+                switch(artistStat) {
+                    case ARTIST:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment, mainArtistFragment).commit();
+                        fragmentStack.push(mainArtistFragment);
+                        break;
+                    case ALBUM:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment, artistAlbumFragment).commit();
+                        fragmentStack.push(artistAlbumFragment);
+                        break;
+                    case SONG:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment, artistSongFragment).commit();
+                        fragmentStack.push(artistSongFragment);
+                        break;
+                    default:
+                }
 
             }
         });
@@ -102,20 +136,23 @@ public class BuildPlaylistActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(int source, String value) {
-        switch(active) {
+        switch(active.peek()) {
             case ALBUM:
+                active.push(ALBUM);
                 albumSongFragment = SongFragment.newInstance(value);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.buildFragment,albumSongFragment).addToBackStack(null)
-                        .commit();
+                        .replace(R.id.buildFragment, albumSongFragment).commit();
+                fragmentStack.push(albumSongFragment);
                 albumStat = SONG;
                 break;
             case ARTIST:
+                active.push(ARTIST);
                 switch(source) {
                     case ARTIST:
                         artistStat = ALBUM;
                         break;
                     case ALBUM:
+                        artistStat = SONG;
                         break;
                     default:
                 }
@@ -140,9 +177,23 @@ public class BuildPlaylistActivity extends AppCompatActivity
         }
     }
 
+    public void back() {
+
+    }
+
     public void back(int source) {
-        switch(active) {
+        switch(active.peek()) {
             case ALBUM:
+                switch(source) {
+                    case ALBUM:
+                        artistStat = ALBUM;
+                        break;
+                    case SONG:
+                        artistStat = SONG;
+                        break;
+
+                    default:
+                }
                 albumSongFragment = SongFragment.newInstance(value);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.buildFragment,albumSongFragment).commit();

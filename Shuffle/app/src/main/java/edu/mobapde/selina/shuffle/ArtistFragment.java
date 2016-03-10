@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ import java.util.List;
 public class ArtistFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private Button backButton;
+    private ArtistAdapter aa;
+    private RecyclerView artistView;
 
     public ArtistFragment() {
         // Required empty public constructor
@@ -51,7 +55,7 @@ public class ArtistFragment extends Fragment {
             artists.add(a);
         }
 
-        ArtistAdapter aa = new ArtistAdapter(artists);
+        aa = new ArtistAdapter(artists);
         aa.setListener(new ArtistAdapter.OnClickListener() {
             @Override
             public void onArtistClick(String name) {
@@ -65,6 +69,15 @@ public class ArtistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
+        backButton = (Button) v.findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.back(BuildPlaylistActivity.ARTIST);
+            }
+        });
+
         artistView = (RecyclerView) v.findViewById(R.id.artistView);
 
         artistView.setAdapter(aa);
@@ -107,11 +120,9 @@ public class ArtistFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    private RecyclerView artistView;
-    private ArtistAdapter aa;
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int source, String value);
+        void back(int source);
     }
 }

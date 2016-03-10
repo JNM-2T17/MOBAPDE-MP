@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
 
     public void setSelected(ArrayList<Long> selected) {
         this.selected = selected;
+        Log.i("SongAdapter","Updating");
+        for(Long l : selected) {
+            Log.i("SongAdapter","Update with " + l);
+        }
+        update();
     }
 
     @Override
@@ -44,6 +50,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
     @Override
     public int getItemCount() {
         return songs.size();
+    }
+
+    public void update() {
+        for(int i = 0; i < getItemCount(); i++) {
+            notifyItemChanged(i);
+        }
     }
 
     public class SongHolder extends RecyclerView.ViewHolder {
@@ -63,6 +75,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
         public void setSong(Song s) {
             this.s = s;
             songCheckBox.setText(s.getTitle());
+            Log.i("SongAdapter","Finding " + s.getId() + " " + s.getTitle());
             boolean found = false;
             for( Long l: selected) {
                 if( l.longValue() == s.getId() ) {

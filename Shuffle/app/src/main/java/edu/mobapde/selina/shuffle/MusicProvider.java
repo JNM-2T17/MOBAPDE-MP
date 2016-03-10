@@ -78,7 +78,7 @@ public class MusicProvider {
     public List<String> getAlbumsOf(String artist) {
         Cursor c = cr.query(uri,new String[] {
                 MediaStore.Audio.Media.ALBUM
-        },MediaStore.Audio.Media.ALBUM + " = ?",new String[] {
+        },MediaStore.Audio.Media.ARTIST + " = ?",new String[] {
                 artist
         },MediaStore.Audio.Media.ALBUM);
         ArrayList<String> albums = new ArrayList<String>();

@@ -51,6 +51,13 @@ public class PlaylistAdapter extends CursorRecyclerViewAdapter<PlaylistAdapter.P
                     listener.onClick(p);
                 }
             });
+
+            playlistPanel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(p);
+                }
+            });
         }
 
         public void setPlaylist(Playlist p) {

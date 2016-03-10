@@ -64,7 +64,7 @@ public class AlbumFragment extends Fragment {
             artist = getArguments().getString(ARTIST);
         }
         MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
-        ArrayList<Album> albums;
+        ArrayList<Album> albums = new ArrayList<Album>();
         List<String> albumNames;
         if (artist != null){
             albumNames = mp.getAlbumsOf(artist);
@@ -92,7 +92,7 @@ public class AlbumFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.back(BuildPlaylistActivity.ALBUM);
+                mListener.back();
             }
         });
         albumView = (RecyclerView) v.findViewById(R.id.albumView);
@@ -138,7 +138,7 @@ public class AlbumFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int fragmentType, String value);
-        void back(int source);
+        boolean back();
     }
 
 }

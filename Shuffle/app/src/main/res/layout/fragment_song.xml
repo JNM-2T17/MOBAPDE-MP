@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,11 +7,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/backButton"
-        android:text="BUTTON"/>
+        android:text="Back"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/songView">
+        android:id="@+id/songView"
+        android:layout_below="@id/backButton">
     </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+</RelativeLayout>

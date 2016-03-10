@@ -31,21 +31,24 @@
         android:layout_below="@id/inputPanel">
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/allButton"
+            android:gravity="center"
             android:text="All Songs"/>
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/albumButton"
+            android:gravity="center"
             android:text="Albums"/>
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/artistButton"
+            android:gravity="center"
             android:text="All Artists"/>
     </LinearLayout>
     <RelativeLayout

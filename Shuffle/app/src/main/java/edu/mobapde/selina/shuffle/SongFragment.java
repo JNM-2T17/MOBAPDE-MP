@@ -27,7 +27,7 @@ public class SongFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ALBUM = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String SONGS = "param2";
 
     // TODO: Rename and change types of parameters
     private String albumName;
@@ -40,6 +40,10 @@ public class SongFragment extends Fragment {
     private SongAdapter sa;
 
     private OnFragmentInteractionListener mListener;
+
+    private boolean firstCreate;
+
+    private ArrayList<Long> selectedSongs;
 
     public SongFragment() {
         // Required empty public constructor
@@ -54,10 +58,11 @@ public class SongFragment extends Fragment {
      * @return A new instance of fragment SongFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SongFragment newInstance(String album) {
+    public static SongFragment newInstance(String album,long[] songs) {
         SongFragment fragment = new SongFragment();
         Bundle args = new Bundle();
         args.putString(ALBUM, album);
+        args.putLongArray(SONGS,songs);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,8 +70,10 @@ public class SongFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long[] selected = null;
         if (getArguments() != null) {
             albumName = getArguments().getString(ALBUM);
+            selected = getArguments().getLongArray(SONGS);
         }
         //make these attributes
         MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
@@ -86,6 +93,17 @@ public class SongFragment extends Fragment {
                 onButtonPressed(id, checked);
             }
         });
+        if( selectedSongs == null ) {
+            ArrayList<Long> sel = new ArrayList<Long>();
+            if (selected != null) {
+                for (long l : selected) {
+                    sel.add(l);
+                }
+            }
+            setSongs(sel);
+        } else {
+            setSongs(selectedSongs);
+        }
     }
 
     @Override
@@ -101,7 +119,7 @@ public class SongFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.back(BuildPlaylistActivity.SONG);
+                mListener.back();
             }
         });
         return v;
@@ -116,6 +134,7 @@ public class SongFragment extends Fragment {
 
     public void setSongs(ArrayList<Long> songs) {
         sa.setSelected(songs);
+        selectedSongs = songs;
     }
 
     @Override
@@ -149,6 +168,6 @@ public class SongFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(long songId, boolean checked);
-        void back(int source);
+        boolean back();
     }
 }

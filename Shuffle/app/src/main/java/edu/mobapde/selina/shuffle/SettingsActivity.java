@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity {
+    public static final int ARTIST = 0;
+    public static final int ALBUM = 1;
+    public static final int TITLE = 2;
     private Button backButton;
     private Button setLevel;
     private TextView levelLabel;

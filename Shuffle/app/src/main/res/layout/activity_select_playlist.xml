@@ -8,5 +8,37 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SelectPlaylistActivity">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/choicePanel"
+        android:layout_below="@id/inputPanel">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/playlistButton"
+            android:gravity="center"
+            android:text="Playlists"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/albumButton"
+            android:gravity="center"
+            android:text="Albums"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/artistButton"
+            android:gravity="center"
+            android:text="All Artists"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/selectFragment"
+        android:layout_below="@id/choicePanel">
+    </RelativeLayout>
 </RelativeLayout>

@@ -4,14 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
 
 public class BuildPlaylistActivity extends AppCompatActivity
-                                implements SongFragment.OnFragmentInteractionListener {
+                                implements SongFragment.OnFragmentInteractionListener,
+                                            ArtistFragment.OnFragmentInteractionListener,
+                                            AlbumFragment.OnFragmentInteractionListener {
+    public static final int ALBUM = 0;
+    public static final int ARTIST = 1;
+    public static final int SONG = 2;
+
     private Playlist p;
     private DBManager dbm;
 
@@ -23,9 +29,13 @@ public class BuildPlaylistActivity extends AppCompatActivity
 
     private SongFragment mainSongFragment;
 
+    private int active;
+
+    private int albumStat;
     private AlbumFragment mainAlbumFragment;
     private SongFragment albumSongFragment;
 
+    private int artistStat;
     private ArtistFragment mainArtistFragment;
     private AlbumFragment artistAlbumFragment;
     private SongFragment artistSongFragment;
@@ -45,6 +55,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
         albumButton = (Button)findViewById(R.id.albumButton);
         artistButton = (Button)findViewById(R.id.artistButton);
 
+        albumStat = ALBUM;
+        artistStat = ARTIST;
+
         mainSongFragment = SongFragment.newInstance(null);
 
         songs = new ArrayList<Long>();
@@ -62,26 +75,60 @@ public class BuildPlaylistActivity extends AppCompatActivity
             playlistField.setText(pName);
         }
 
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                active = SONG;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.buildFragment, mainSongFragment).commit();
+            }
+        });
+
+        albumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                active = ALBUM;
+            }
+        });
+
+        artistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                active = ARTIST;
+
+            }
+        });
     }
 
-    //@Override
-    public void onFragmentInteraction(String source, String select) {
-        //if from song
-        //mark as selected or unselected
-        //if from album
-        //start new songfragment for that album
-        //if from artist
-        //start new albumfragment for that artist
+    @Override
+    public void onFragmentInteraction(int source, String value) {
+        switch(active) {
+            case ALBUM:
+                albumSongFragment = SongFragment.newInstance(value);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.buildFragment,albumSongFragment).addToBackStack(null)
+                        .commit();
+                albumStat = SONG;
+                break;
+            case ARTIST:
+                switch(source) {
+                    case ARTIST:
+                        artistStat = ALBUM;
+                        break;
+                    case ALBUM:
+                        break;
+                    default:
+                }
+                break;
+            default:
+        }
     }
 
     @Override
     public void onFragmentInteraction(long songId, boolean checked) {
         if( checked ) {
-            Log.i("BuildPlaylistActivity","Adding " + songId);
             songs.add(songId);
         } else {
-            Log.i("BuildPlaylistActivity","Removing " + songId);
-            for( int i = 0; i < )
             songs.remove(songs.indexOf(songId));
         }
         mainSongFragment.setSongs(songs);
@@ -90,6 +137,23 @@ public class BuildPlaylistActivity extends AppCompatActivity
         }
         if( artistSongFragment != null ) {
             artistSongFragment.setSongs(songs);
+        }
+    }
+
+    public void back(int source) {
+        switch(active) {
+            case ALBUM:
+                albumSongFragment = SongFragment.newInstance(value);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.buildFragment,albumSongFragment).commit();
+                albumStat = SONG;
+                break;
+            case ARTIST:
+                switch(source) {
+
+                }
+                break;
+            default:
         }
     }
 }

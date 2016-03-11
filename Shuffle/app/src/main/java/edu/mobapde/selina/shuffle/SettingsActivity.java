@@ -29,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         backButton = (Button)findViewById(R.id.backButton);
         setLevel = (Button)findViewById(R.id.setLevel);
+        //setLevel = (Button)findViewById(R.id.settingsButton);
         levelLabel = (TextView)findViewById(R.id.levelLabel);
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        levelLabel.setText(LEVELS[getIntent().getExtras().getInt(MainActivity.LEVEL)]);
+        //levelLabel.setText(LEVELS[getIntent().getExtras().getInt(MainActivity.LEVEL)]);
+        //setLevel.setText("Difficulty: ");
     }
 
     public void setLevel(int level) {

@@ -14,7 +14,7 @@ public class SetLevelDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
+        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle("Set Level")
                 .setItems(SettingsActivity.LEVELS, new DialogInterface.OnClickListener() {
                     @Override
@@ -23,6 +23,18 @@ public class SetLevelDialog extends DialogFragment {
                         dismiss();
                     }
                 });
+        return dialogBuilder.create();*/
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
+                .setTitle("Set Level")
+                .setItems(SettingsActivity.LEVELS, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((MainActivity)getActivity()).setLevel(which);
+                        dismiss();
+                    }
+                });
         return dialogBuilder.create();
+
     }
 }

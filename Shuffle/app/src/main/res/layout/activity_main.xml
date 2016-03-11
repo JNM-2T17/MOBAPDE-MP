@@ -7,64 +7,74 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context="edu.mobapde.selina.shuffle.MainActivity">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@drawable/logo"
-        android:id="@+id/logo"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <Button
+            android:layout_height="100dp"
+            android:src="@drawable/logo"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:id="@+id/logo"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="BEGIN SHUFFLE"
-                android:textSize="20sp"
-                android:padding="15dp"
-                android:id="@+id/playButton"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
-                android:layout_marginBottom="2.5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="CREATE PLAYLIST"
-                android:textSize="20sp"
-                android:padding="15dp"
-                android:id="@+id/createButton"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
-                android:layout_marginBottom="2.5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="SETTINGS"
-                android:textSize="20sp"
-                android:padding="15dp"
-                android:id="@+id/settingsButton"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="LEADERBOARD"
-                android:textSize="20sp"
-                android:padding="15dp"
-                android:id="@+id/leadButton"/>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="BEGIN SHUFFLE"
+                    android:textSize="20sp"
+                    android:padding="15dp"
+                    android:id="@+id/playButton"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="CREATE PLAYLIST"
+                    android:textSize="20sp"
+                    android:padding="15dp"
+                    android:id="@+id/createButton"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="SETTINGS"
+                    android:textSize="20sp"
+                    android:padding="15dp"
+                    android:id="@+id/settingsButton"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="LEADERBOARD"
+                    android:textSize="20sp"
+                    android:padding="15dp"
+                    android:id="@+id/leadButton"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
 </LinearLayout>

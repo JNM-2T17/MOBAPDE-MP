@@ -49,7 +49,7 @@
             android:layout_weight="1"
             android:id="@+id/artistButton"
             android:gravity="center"
-            android:text="All Artists"/>
+            android:text="Artists"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

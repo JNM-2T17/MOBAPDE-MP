@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -49,12 +49,9 @@ public class SelectAlbumFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
-        ArrayList<Album> albums = new ArrayList<Album>();
-        List<String> albumNames = mp.getAllAlbums();
-        for (String album : albumNames){
-            albums.add(new Album(album));
-        }
-        aa = new AlbumAdapter(albums);
+        ArrayList<Album> albums = mp.getAllAlbums();
+        Resources res = getResources();
+        aa = new AlbumAdapter(res,albums);
         aa.setListener(new AlbumAdapter.OnClickListener() {
             @Override
             public void onAlbumClick(String album) {

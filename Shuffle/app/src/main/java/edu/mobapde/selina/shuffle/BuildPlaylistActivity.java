@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -94,6 +95,7 @@ public class BuildPlaylistActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.buildFragment, mainSongFragment);
         ft.commit();
+        swapColors(fragmentStack.peek());
 
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,13 @@ public class BuildPlaylistActivity extends AppCompatActivity
                 mainSongFragment.setSongs(songs);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.buildFragment, mainSongFragment).commit();
+
+                while (fragmentStack.size() > 2){
+                    fragmentStack.pop();
+                }
+
                 fragmentStack.push(mainSongFragment);
+                swapColors(fragmentStack.peek());
             }
         });
 
@@ -114,6 +122,11 @@ public class BuildPlaylistActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 active.push(ALBUM);
+
+                while (fragmentStack.size() > 2){
+                    fragmentStack.pop();
+                }
+
                 switch(albumStat) {
                     case ALBUM:
                         getSupportFragmentManager().beginTransaction()
@@ -128,6 +141,7 @@ public class BuildPlaylistActivity extends AppCompatActivity
                         break;
                     default:
                 }
+                swapColors(fragmentStack.peek());
             }
         });
 
@@ -135,6 +149,11 @@ public class BuildPlaylistActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 active.push(ARTIST);
+
+                while (fragmentStack.size() > 2){
+                    fragmentStack.pop();
+                }
+
                 switch(artistStat) {
                     case ARTIST:
                         getSupportFragmentManager().beginTransaction()
@@ -154,6 +173,7 @@ public class BuildPlaylistActivity extends AppCompatActivity
                         break;
                     default:
                 }
+                swapColors(fragmentStack.peek());
 
             }
         });
@@ -273,8 +293,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
         if( active.size() > 1 ) {
             active.pop();
             fragmentStack.pop();
+            swapColors(fragmentStack.peek());
             if( fragmentStack.peek() instanceof SongFragment ) {
-                ((SongFragment)fragmentStack.peek()).setSongs(songs);
+                ((SongFragment) fragmentStack.peek()).setSongs(songs);
             }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.buildFragment, fragmentStack.peek()).commit();
@@ -283,4 +304,39 @@ public class BuildPlaylistActivity extends AppCompatActivity
             return false;
         }
     }
+
+    public void swapColors(Fragment fragment) {
+        if( fragment.equals(mainArtistFragment)/*fragment instanceof ArtistFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
+            } else {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+            }
+        } else if( fragment.equals(mainAlbumFragment)/*fragment instanceof AlbumFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2,null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+            } else {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        } else if ( fragment.equals(mainSongFragment)/*fragment instanceof SongFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2,null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+            } else {
+                allButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        }
+    }
+
 }

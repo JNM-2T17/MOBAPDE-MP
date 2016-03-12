@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    tools:context="edu.mobapde.selina.shuffle.MainActivity">
+    tools:context="edu.mobapde.selina.shuffle.MainActivity"
+    android:id="@+id/mainBackground">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -115,13 +115,13 @@ public class SongFragment extends Fragment {
         songView.setAdapter(sa); //change this later or else
         songView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
 
-        backButton = (Button)v.findViewById(R.id.backButton);
+        /*backButton = (Button)v.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.back();
             }
-        });
+        });*/
         return v;
     }
 

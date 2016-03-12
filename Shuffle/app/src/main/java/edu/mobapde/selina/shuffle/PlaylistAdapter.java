@@ -31,7 +31,7 @@ public class PlaylistAdapter extends CursorRecyclerViewAdapter<PlaylistAdapter.P
 
     @Override
     public PlaylistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_view,null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_view,parent, false);
 
         return new PlaylistHolder(v);
     }

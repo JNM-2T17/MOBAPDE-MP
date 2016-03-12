@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
         <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/albumImage"
+            android:layout_width="66.6666666666dp"
+            android:layout_height="66.666666666dp"
+            android:id="@+id/albumArt"
             />
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="Death of a Bachelor"
-            android:textSize="20sp"
-            android:id="@+id/albumLabel"/>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Death of a Bachelor"
+                android:textSize="18sp"
+                android:id="@+id/albumLabel"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Panic! at the Disco"
+                android:id="@+id/artistLabel"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark"></LinearLayout>
 
 </LinearLayout>

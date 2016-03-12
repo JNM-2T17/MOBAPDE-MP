@@ -1,7 +1,9 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -14,6 +16,8 @@ import java.util.List;
 public class MusicProvider {
     private ContentResolver cr;
     private Uri uri;
+    final public static Uri sArtworkUri = Uri
+            .parse("content://media/external/audio/albumart");
 
     public MusicProvider(ContentResolver cr) {
         this.cr = cr;
@@ -43,16 +47,38 @@ public class MusicProvider {
         return songs;
     }
 
-    public List<String> getAllAlbums() {
+    public ArrayList<Album> getAllAlbums() {
         Cursor c = cr.query(uri,new String[] {
-                MediaStore.Audio.Media.ALBUM
-        },null,null,MediaStore.Audio.Media.ALBUM);
-        ArrayList<String> albums = new ArrayList<String>();
+                "DISTINCT " + MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM_ID
+            },
+            MediaStore.Audio.Media.ALBUM + " is not null ) GROUP BY (" + MediaStore.Audio.Media.ALBUM,
+            null,MediaStore.Audio.Media.ALBUM);
+        ArrayList<Album> albums = new ArrayList<>();
         if( c.moveToFirst() ) {
             do {
                 String album = c.getString(c.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                String artist = c.getString(c.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+
+                Long albumId = c.getLong(c.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                Bitmap albumArt = null;
+
+                /*
+                try {
+                    albumArt = MediaStore.Images.Media.getBitmap(
+                            cr, albumArtUri);
+                    albumArt = Bitmap.createScaledBitmap(albumArt, 64, 64, true);
+
+                } catch (FileNotFoundException exception) {
+                    //exception.printStackTrace();
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                } */
+
                 if( albums.size() == 0 || !album.equals(albums.get(albums.size() - 1))) {
-                    albums.add(album);
+                    albums.add(new Album(album,artist,albumArt));
                 }
             } while( c.moveToNext());
         }
@@ -75,18 +101,35 @@ public class MusicProvider {
         return artists;
     }
 
-    public List<String> getAlbumsOf(String artist) {
+    public ArrayList<Album> getAlbumsOf(String artist) {
         Cursor c = cr.query(uri,new String[] {
-                MediaStore.Audio.Media.ALBUM
+                "DISTINCT " + MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.ALBUM_ID
         },MediaStore.Audio.Media.ARTIST + " = ?",new String[] {
                 artist
         },MediaStore.Audio.Media.ALBUM);
-        ArrayList<String> albums = new ArrayList<String>();
+        ArrayList<Album> albums = new ArrayList<>();
         if( c.moveToFirst() ) {
             do {
                 String album = c.getString(c.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                Long albumId = c.getLong(c.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                Bitmap albumArt = null;
+
+                /*
+                try {
+                    albumArt = MediaStore.Images.Media.getBitmap(
+                            cr, albumArtUri);
+                    albumArt = Bitmap.createScaledBitmap(albumArt, 64, 64, true);
+
+                } catch (FileNotFoundException exception) {
+                    //exception.printStackTrace();
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                } */
+
                 if( albums.size() == 0 || !album.equals(albums.get(albums.size() - 1))) {
-                    albums.add(album);
+                    albums.add(new Album(album,artist,albumArt));
                 }
             } while( c.moveToNext());
         }

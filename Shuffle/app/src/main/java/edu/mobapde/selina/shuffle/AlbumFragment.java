@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -64,17 +64,19 @@ public class AlbumFragment extends Fragment {
             artist = getArguments().getString(ARTIST);
         }
         MusicProvider mp = new MusicProvider(getActivity().getContentResolver());
-        ArrayList<Album> albums = new ArrayList<Album>();
-        List<String> albumNames;
+        ArrayList<Album> albums = new ArrayList<>();
         if (artist != null){
+            /*List<String> albumNames;
             albumNames = mp.getAlbumsOf(artist);
+            for (String album: albumNames){
+                albums.add(new Album(album,artist));
+            }*/
+            albums = mp.getAlbumsOf(artist);
         } else {
-            albumNames = mp.getAllAlbums();
+            albums = mp.getAllAlbums();
         }
-        for (String album : albumNames){
-            albums.add(new Album(album));
-        }
-        aa = new AlbumAdapter(albums);
+        Resources res = getResources();
+        aa = new AlbumAdapter(res,albums);
         aa.setListener(new AlbumAdapter.OnClickListener() {
             @Override
             public void onAlbumClick(String album) {
@@ -88,13 +90,13 @@ public class AlbumFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_album, container, false);
-        backBtn = (Button) v.findViewById(R.id.backButtonAlbum);
+        /*backBtn = (Button) v.findViewById(R.id.backButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.back();
             }
-        });
+        });*/
         albumView = (RecyclerView) v.findViewById(R.id.albumView);
         albumView.setAdapter(aa);
         albumView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));

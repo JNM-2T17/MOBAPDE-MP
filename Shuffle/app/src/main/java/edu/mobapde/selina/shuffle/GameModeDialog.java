@@ -12,11 +12,10 @@ import android.os.Bundle;
 public class GameModeDialog extends DialogFragment {
     public static final int TIME_ATTACK = 0;
     public static final int SONG_RUSH = 1;
-    private int gameMode;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getBaseContext())
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("Select Game Mode")
                 .setItems(new String[]{
                         "Time Attack",

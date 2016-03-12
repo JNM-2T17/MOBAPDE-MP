@@ -37,7 +37,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
         setContentView(R.layout.activity_select_playlist);
 
         choicePanel = (LinearLayout)findViewById(R.id.choicePanel);
-        playlistButton = (Button)findViewById(R.id.allButton);
+        playlistButton = (Button)findViewById(R.id.playlistButton);
         albumButton = (Button)findViewById(R.id.albumButton);
         artistButton = (Button)findViewById(R.id.artistButton);
 
@@ -63,7 +63,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.selectFragment, playlistFragment)
+                        .replace(R.id.selectFragment, playlistFragment)
                         .commit();
             }
         });
@@ -72,7 +72,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.selectFragment,artistFragment)
+                        .replace(R.id.selectFragment,artistFragment)
                         .commit();
             }
         });
@@ -81,7 +81,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.selectFragment,albumFragment)
+                        .replace(R.id.selectFragment,albumFragment)
                         .commit();
             }
         });

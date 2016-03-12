@@ -47,6 +47,26 @@ public class MusicProvider {
         return songs;
     }
 
+    public Song getSong(long id) {
+        Cursor c = cr.query(uri, new String[]{
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.DURATION,
+        }, MediaStore.Audio.Media._ID + " = ?", new String[] {
+                id + ""
+        }, MediaStore.Audio.Media.TITLE);
+        if (c.moveToFirst()) {
+            return new Song(c.getLong(c.getColumnIndex(MediaStore.Audio.Media._ID)),
+                    c.getString(c.getColumnIndex(MediaStore.Audio.Media.TITLE)),
+                    c.getString(c.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                    c.getString(c.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                    c.getLong(c.getColumnIndex(MediaStore.Audio.Media.DURATION)));
+        }
+        return null;
+    }
+
     public ArrayList<Album> getAllAlbums() {
         Cursor c = cr.query(uri,new String[] {
                 "DISTINCT " + MediaStore.Audio.Media.ALBUM,
@@ -159,4 +179,26 @@ public class MusicProvider {
         return songs;
     }
 
+    public List<Song> getSongsOf(String artist) {
+        Cursor c = cr.query(uri,new String[] {
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.DURATION,
+        },MediaStore.Audio.Media.ARTIST + " = ?",new String[] {
+                artist
+        }, MediaStore.Audio.Media.TITLE);
+        ArrayList<Song> songs = new ArrayList<Song>();
+        if( c.moveToFirst()) {
+            do {
+                songs.add(new Song(c.getLong(c.getColumnIndex(MediaStore.Audio.Media._ID)),
+                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.TITLE)),
+                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                        c.getLong(c.getColumnIndex(MediaStore.Audio.Media.DURATION))));
+            } while(c.moveToNext());
+        }
+        return songs;
+    }
 }

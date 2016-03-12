@@ -33,6 +33,7 @@ public class SongRush extends AppCompatActivity {
     private boolean gameStart;
     private int score;
     private int type;
+    private String compare;
 
     private Button startButton;
     private Button skipButton;
@@ -235,7 +236,6 @@ public class SongRush extends AppCompatActivity {
     }
 
     public void guess(String guess) {
-        String compare = "";
         Song s = playlist.get(currSong);
         switch(type) {
             case SettingsActivity.ARTIST:
@@ -256,7 +256,7 @@ public class SongRush extends AppCompatActivity {
                 public Dialog onCreateDialog(Bundle savedInstanceState) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                             .setTitle("Wrong")
-                            .setMessage("Wrong guess")
+                            .setMessage("Wrong guess\nThat was " + compare + ".")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

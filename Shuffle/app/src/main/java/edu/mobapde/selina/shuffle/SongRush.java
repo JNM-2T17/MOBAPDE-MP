@@ -158,6 +158,7 @@ public class SongRush extends AppCompatActivity {
     }
 
     public void nextSong() {
+        guessField.setText("");
         if( currSong > -1 ) {
             fifteen.removeCallbacks(songTimer);
             stop();
@@ -180,6 +181,7 @@ public class SongRush extends AppCompatActivity {
                 fifteen.postDelayed(songTimer = new Runnable() {
                     @Override
                     public void run() {
+                        guess(guessField.getText().toString());
                         nextSong();
                     }
                 },15000);

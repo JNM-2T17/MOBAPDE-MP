@@ -248,9 +248,25 @@ public class SongRush extends AppCompatActivity {
                 compare = s.getTitle();
                 break;
         }
-        if( compare.equals(guess)) {
+        if( compare.toLowerCase().equals(guess.toLowerCase())) {
             score++;
-            nextSong();
+        } else {
+            (new DialogFragment(){
+                @Override
+                public Dialog onCreateDialog(Bundle savedInstanceState) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                            .setTitle("Wrong")
+                            .setMessage("Wrong guess")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismiss();
+                                }
+                            });
+                    return builder.create();
+                }
+            }).show(getFragmentManager(),"");
         }
+        nextSong();
     }
 }

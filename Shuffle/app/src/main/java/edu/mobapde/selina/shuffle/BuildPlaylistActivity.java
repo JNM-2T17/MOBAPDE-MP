@@ -22,6 +22,7 @@ public class BuildPlaylistActivity extends AppCompatActivity
     public static final int ALBUM = 0;
     public static final int ARTIST = 1;
     public static final int SONG = 2;
+    public static final int PLAYLIST = 3;
 
     private Playlist p;
     private DBManager dbm;

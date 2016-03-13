@@ -61,6 +61,7 @@ public class TimeAttack extends AppCompatActivity {
         switch(listType) {
             case BuildPlaylistActivity.SONG:
                 playlist = mp.getAllSongs();
+                break;
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);

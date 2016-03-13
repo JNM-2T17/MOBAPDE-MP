@@ -21,9 +21,10 @@ import android.widget.EditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SongRush extends AppCompatActivity {
-    private ArrayList<Song> playlist;
+    private List<Song> playlist;
     private DBManager dbm;
     private MusicProvider mp;
 
@@ -54,22 +55,24 @@ public class SongRush extends AppCompatActivity {
         listType = list.getExtras().getInt(SelectPlaylistActivity.LIST);
         dbm = new DBManager(getBaseContext());
         mp = new MusicProvider(getContentResolver());
-        playlist = new ArrayList<Song>();
         switch(listType) {
+            case BuildPlaylistActivity.SONG:
+                playlist = mp.getAllSongs();
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);
+                playlist = new ArrayList<Song>();
                 for(int i = 0; i < p.size(); i++) {
                     playlist.add(mp.getSong(p.song(i)));
                 }
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
-                playlist = (ArrayList<Song>)mp.getSongsIn(value);
+                playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
-                playlist = (ArrayList<Song>)mp.getSongsOf(value);
+                playlist = mp.getSongsOf(value);
                 break;
         }
 

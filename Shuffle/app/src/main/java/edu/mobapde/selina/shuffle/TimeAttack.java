@@ -10,10 +10,10 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +22,10 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimeAttack extends AppCompatActivity {
-    private ArrayList<Song> playlist;
+    private List<Song> playlist;
     private DBManager dbm;
     private MusicProvider mp;
 
@@ -57,22 +58,24 @@ public class TimeAttack extends AppCompatActivity {
         listType = list.getExtras().getInt(SelectPlaylistActivity.LIST);
         dbm = new DBManager(getBaseContext());
         mp = new MusicProvider(getContentResolver());
-        playlist = new ArrayList<Song>();
         switch(listType) {
+            case BuildPlaylistActivity.SONG:
+                playlist = mp.getAllSongs();
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);
+                playlist = new ArrayList<Song>();
                 for(int i = 0; i < p.size(); i++) {
                     playlist.add(mp.getSong(p.song(i)));
                 }
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
-                playlist = (ArrayList<Song>)mp.getSongsIn(value);
+                playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
-                playlist = (ArrayList<Song>)mp.getSongsOf(value);
+                playlist = mp.getSongsOf(value);
                 break;
         }
 

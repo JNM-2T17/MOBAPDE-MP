@@ -23,6 +23,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
     private Button playlistButton;
     private Button albumButton;
     private Button artistButton;
+    private Button allButton;
 
     private Fragment playlistFragment;
     private Fragment albumFragment;
@@ -41,6 +42,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
         playlistButton = (Button)findViewById(R.id.playlistButton);
         albumButton = (Button)findViewById(R.id.albumButton);
         artistButton = (Button)findViewById(R.id.artistButton);
+        allButton = (Button)findViewById(R.id.allButton);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int level = sp.getInt(MainActivity.LEVEL,SettingsActivity.TITLE);
@@ -89,6 +91,14 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 swapColors(albumFragment);
             }
         });
+
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listMode = BuildPlaylistActivity.SONG;
+                onFragmentInteraction(listMode, null);
+            }
+        });
     }
 
     public void startGame(int mode) {
@@ -123,6 +133,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 selected = value;
                 //fall-through
             case BuildPlaylistActivity.PLAYLIST:
+            case BuildPlaylistActivity.SONG:
                 gmd.show(getFragmentManager(),"");
                 break;
             default:

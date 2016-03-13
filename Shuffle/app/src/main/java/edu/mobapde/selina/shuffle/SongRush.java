@@ -32,7 +32,10 @@ public class SongRush extends AppCompatActivity {
     private Runnable songTimer;
     private boolean gameStart;
     private int score;
+    private int listType;
     private int type;
+    private String value;
+    private long pId;
     private String compare;
 
     private Button startButton;
@@ -48,25 +51,25 @@ public class SongRush extends AppCompatActivity {
         setContentView(R.layout.activity_song_rush);
 
         Intent list = getIntent();
-        type = list.getExtras().getInt(SelectPlaylistActivity.LIST);
+        listType = list.getExtras().getInt(SelectPlaylistActivity.LIST);
         dbm = new DBManager(getBaseContext());
         mp = new MusicProvider(getContentResolver());
         playlist = new ArrayList<Song>();
-        switch(type) {
+        switch(listType) {
             case BuildPlaylistActivity.PLAYLIST:
-                Playlist p = dbm.getPlayList(list.getExtras()
-                                                .getLong(SelectPlaylistActivity.PLAYLIST));
+                pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
+                Playlist p = dbm.getPlayList(pId);
                 for(int i = 0; i < p.size(); i++) {
                     playlist.add(mp.getSong(p.song(i)));
                 }
                 break;
             case BuildPlaylistActivity.ALBUM:
-                playlist = (ArrayList<Song>)mp.getSongsIn(list.getExtras()
-                                                            .getString(SelectPlaylistActivity.VAL));
+                value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                playlist = (ArrayList<Song>)mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
-                playlist = (ArrayList<Song>)mp.getSongsOf(list.getExtras()
-                                                            .getString(SelectPlaylistActivity.VAL));
+                value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                playlist = (ArrayList<Song>)mp.getSongsOf(value);
                 break;
         }
 
@@ -106,7 +109,7 @@ public class SongRush extends AppCompatActivity {
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guess(guessField.getText().toString());
+                guess();
             }
         });
     }
@@ -182,7 +185,7 @@ public class SongRush extends AppCompatActivity {
                 fifteen.postDelayed(songTimer = new Runnable() {
                     @Override
                     public void run() {
-                        guess(guessField.getText().toString());
+                        guess();
                         nextSong();
                     }
                 },15000);
@@ -228,14 +231,86 @@ public class SongRush extends AppCompatActivity {
                         });
                 return builder.create();
             }
-        }).show(getFragmentManager(),"");
+        }).show(getFragmentManager(), "");
     }
 
     public void saveGame() {
 
     }
 
-    public void guess(String guess) {
+    public boolean lcsWord(String str1,String str2) {
+        int[][] lcs = new int[str1.length() + 1][str2.length() + 1];
+
+        int i = 0;
+        int j = 0;
+        for( i = 0; i < lcs.length - 1; i++) {
+            for( j = 0; j < lcs[0].length - 1; j++ ) {
+                if( str1.charAt(i) == str2.charAt(j) ) {
+                    lcs[i + 1][j + 1] = lcs[i][j] + 1;
+                } else {
+                    lcs[i + 1][j + 1] = Math.max(lcs[i][j + 1],lcs[i + 1][j]);
+                }
+            }
+        }
+
+        String longest;
+        int k = i;
+        int l = j;
+
+//        String str = "";
+//        while( k != 0 && l != 0) {
+//            if( lcs[k][l] == lcs[k][l - 1]) {
+//                l--;
+//            } else if( lcs[k][l] == lcs[k - 1][l]) {
+//                k--;
+//            } else {
+//                str = str1.charAt(k - 1) + str;
+//                l--;
+//                k--;
+//            }
+//        }
+        return lcs[i][j] * 2 >= Math.max(str1.length(), str2.length());
+    }
+
+    public boolean lcsGuess(String compare, String guess) {
+        String[] parts1 = compare.split(" ");
+        String[] parts2 = guess.split(" ");
+        int[][] lcs = new int[parts1.length + 1][parts2.length + 1];
+
+        int i = 0;
+        int j = 0;
+        for( i = 0; i < lcs.length - 1; i++) {
+            for( j = 0; j < lcs[0].length - 1; j++ ) {
+                if( lcsWord(parts1[i],parts2[j]) ) {
+                    lcs[i + 1][j + 1] = lcs[i][j] + 1;
+                } else {
+                    lcs[i + 1][j + 1] = Math.max(lcs[i][j + 1],lcs[i + 1][j]);
+                }
+            }
+        }
+
+        String longest;
+        int k = i;
+        int l = j;
+
+//        String str = "";
+//        while( k != 0 && l != 0) {
+//            if( lcs[k][l] == lcs[k][l - 1]) {
+//                l--;
+//            } else if( lcs[k][l] == lcs[k - 1][l]) {
+//                k--;
+//            } else {
+//                str = parts1[k - 1] + " " + str;
+//                l--;
+//                k--;
+//            }
+//        }
+
+        return lcs[i][j] >= Math.min(3,parts1.length);
+    }
+
+    public void guess() {
+        String guess = guessField.getText().toString();
         Song s = playlist.get(currSong);
         switch(type) {
             case SettingsActivity.ARTIST:
@@ -248,7 +323,7 @@ public class SongRush extends AppCompatActivity {
                 compare = s.getTitle();
                 break;
         }
-        if( compare.toLowerCase().equals(guess.toLowerCase())) {
+        if( lcsGuess(compare.toLowerCase(), guess.toLowerCase())) {
             score++;
         } else {
             (new DialogFragment(){

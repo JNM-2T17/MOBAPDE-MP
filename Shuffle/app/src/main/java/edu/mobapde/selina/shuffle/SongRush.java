@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class SongRush extends AppCompatActivity {
     private long pId;
     private String compare;
 
+    private TextView gameLabel;
+    private TextView scoreLabel;
     private Button startButton;
     private Button skipButton;
     private Button guessButton;
@@ -52,16 +55,19 @@ public class SongRush extends AppCompatActivity {
         setContentView(R.layout.activity_song_rush);
 
         Intent list = getIntent();
+        gameLabel = (TextView)findViewById(R.id.gameLabel);
         listType = list.getExtras().getInt(SelectPlaylistActivity.LIST);
         dbm = new DBManager(getBaseContext());
         mp = new MusicProvider(getContentResolver());
         switch(listType) {
             case BuildPlaylistActivity.SONG:
                 playlist = mp.getAllSongs();
+                gameLabel.setText("All Songs");
                 break;
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);
+                gameLabel.setText(p.name());
                 playlist = new ArrayList<Song>();
                 for(int i = 0; i < p.size(); i++) {
                     playlist.add(mp.getSong(p.song(i)));
@@ -69,10 +75,12 @@ public class SongRush extends AppCompatActivity {
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                gameLabel.setText(value);
                 playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                gameLabel.setText(value);
                 playlist = mp.getSongsOf(value);
                 break;
         }
@@ -84,6 +92,8 @@ public class SongRush extends AppCompatActivity {
         skipButton = (Button)findViewById(R.id.skipButton);
         guessField = (EditText)findViewById(R.id.guessField);
         guessButton = (Button)findViewById(R.id.guessButton);
+        scoreLabel = (TextView)findViewById(R.id.score);
+        scoreLabel.setVisibility(View.GONE);
         skipButton.setVisibility(View.GONE);
         guessField.setVisibility(View.GONE);
         guessButton.setVisibility(View.GONE);
@@ -162,6 +172,8 @@ public class SongRush extends AppCompatActivity {
         skipButton.setVisibility(View.VISIBLE);
         guessField.setVisibility(View.VISIBLE);
         guessButton.setVisibility(View.VISIBLE);
+        scoreLabel.setVisibility(View.VISIBLE);
+        scoreLabel.setText("0");
         nextSong();
     }
 
@@ -202,9 +214,11 @@ public class SongRush extends AppCompatActivity {
     }
 
     public void stop() {
-        mMediaPlayer.stop();
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        if( mMediaPlayer != null ) {
+            mMediaPlayer.stop();
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
     }
 
     public void finishGame() {
@@ -215,6 +229,7 @@ public class SongRush extends AppCompatActivity {
         skipButton.setVisibility(View.GONE);
         guessField.setVisibility(View.GONE);
         guessButton.setVisibility(View.GONE);
+        scoreLabel.setVisibility(View.GONE);
         (new DialogFragment(){
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -329,6 +344,7 @@ public class SongRush extends AppCompatActivity {
         }
         if( lcsGuess(compare.toLowerCase(), guess.toLowerCase())) {
             score++;
+            scoreLabel.setText(score + "");
         } else {
             (new DialogFragment(){
                 @Override

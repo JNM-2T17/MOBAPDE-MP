@@ -32,6 +32,7 @@ public class TimeAttack extends AppCompatActivity {
     private int currSong;
     private Handler fifteen;
     private Runnable songTimer;
+    private Runnable gameTimer;
     private boolean gameStart;
     private int score;
     private int listType;
@@ -41,6 +42,8 @@ public class TimeAttack extends AppCompatActivity {
     private String compare;
     private int timeLeft;
 
+    private TextView gameLabel;
+    private TextView scoreLabel;
     private Button startButton;
     private TextView timer;
     private Button skipButton;
@@ -55,16 +58,19 @@ public class TimeAttack extends AppCompatActivity {
         setContentView(R.layout.activity_time_attack);
 
         Intent list = getIntent();
+        gameLabel = (TextView)findViewById(R.id.gameLabel);
         listType = list.getExtras().getInt(SelectPlaylistActivity.LIST);
         dbm = new DBManager(getBaseContext());
         mp = new MusicProvider(getContentResolver());
         switch(listType) {
             case BuildPlaylistActivity.SONG:
                 playlist = mp.getAllSongs();
+                gameLabel.setText("All Songs");
                 break;
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);
+                gameLabel.setText(p.name());
                 playlist = new ArrayList<Song>();
                 for(int i = 0; i < p.size(); i++) {
                     playlist.add(mp.getSong(p.song(i)));
@@ -72,10 +78,12 @@ public class TimeAttack extends AppCompatActivity {
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                gameLabel.setText(value);
                 playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                gameLabel.setText(value);
                 playlist = mp.getSongsOf(value);
                 break;
         }
@@ -87,11 +95,13 @@ public class TimeAttack extends AppCompatActivity {
         skipButton = (Button)findViewById(R.id.skipButton);
         guessField = (EditText)findViewById(R.id.guessField);
         guessButton = (Button)findViewById(R.id.guessButton);
+        scoreLabel = (TextView)findViewById(R.id.score);
         timer = (TextView)findViewById(R.id.timer);
 
         skipButton.setVisibility(View.GONE);
         guessField.setVisibility(View.GONE);
         guessButton.setVisibility(View.GONE);
+        scoreLabel.setVisibility(View.GONE);
 
         gameStart = false;
 
@@ -173,16 +183,19 @@ public class TimeAttack extends AppCompatActivity {
         skipButton.setVisibility(View.VISIBLE);
         guessField.setVisibility(View.VISIBLE);
         guessButton.setVisibility(View.VISIBLE);
+        scoreLabel.setVisibility(View.VISIBLE);
+        scoreLabel.setText("0");
         timeLeft = 135;
         convertTime();
         fifteen = new Handler();
-        fifteen.postDelayed(new Runnable() {
+        fifteen.postDelayed(gameTimer = new Runnable() {
 
             @Override
             public void run() {
                 timeLeft--;
                 convertTime();
                 if( timeLeft == 0 ) {
+                    fifteen.removeCallbacks(songTimer);
                     guess();
                     (new DialogFragment(){
                         @Override
@@ -251,12 +264,14 @@ public class TimeAttack extends AppCompatActivity {
 
     public void finishGame() {
         fifteen.removeCallbacks(songTimer);
+        fifteen.removeCallbacks(gameTimer);
         stop();
         gameStart = false;
         startButton.setText("Start");
         skipButton.setVisibility(View.GONE);
         guessField.setVisibility(View.GONE);
         guessButton.setVisibility(View.GONE);
+        scoreLabel.setVisibility(View.GONE);
         timer.setText("");
         (new DialogFragment(){
             @Override
@@ -372,6 +387,7 @@ public class TimeAttack extends AppCompatActivity {
         }
         if( lcsGuess(compare.toLowerCase(), guess.toLowerCase())) {
             score++;
+            scoreLabel.setText(score + "");
         } else {
             (new DialogFragment(){
                 @Override

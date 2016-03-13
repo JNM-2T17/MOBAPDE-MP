@@ -48,7 +48,8 @@ public class SelectPlaylistActivity extends AppCompatActivity
         int level = sp.getInt(MainActivity.LEVEL,SettingsActivity.TITLE);
         switch(level) {
             case SettingsActivity.ARTIST:
-                choicePanel.setVisibility(View.GONE);
+                albumButton.setVisibility(View.GONE);
+                artistButton.setVisibility(View.GONE);
                 break;
             case SettingsActivity.ALBUM:
                 albumButton.setVisibility(View.GONE);

@@ -2,6 +2,7 @@ package edu.mobapde.selina.shuffle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -65,6 +66,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.selectFragment, playlistFragment)
                         .commit();
+                swapColors(playlistFragment);
             }
         });
 
@@ -74,6 +76,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.selectFragment,artistFragment)
                         .commit();
+                swapColors(artistFragment);
             }
         });
 
@@ -83,6 +86,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.selectFragment,albumFragment)
                         .commit();
+                swapColors(albumFragment);
             }
         });
     }
@@ -124,4 +128,39 @@ public class SelectPlaylistActivity extends AppCompatActivity
             default:
         }
     }
+
+    public void swapColors(Fragment fragment) {
+        if( fragment.equals(artistFragment)/*fragment instanceof ArtistFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
+            } else {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+            }
+        } else if( fragment.equals(albumFragment)/*fragment instanceof AlbumFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2,null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+            } else {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        } else if ( fragment.equals(playlistFragment)/*fragment instanceof SongFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+            } else {
+                playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        }
+    }
+
 }

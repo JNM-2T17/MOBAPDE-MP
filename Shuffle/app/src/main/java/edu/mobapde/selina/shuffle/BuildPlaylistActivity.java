@@ -109,9 +109,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.buildFragment, mainSongFragment).commit();
 
-                while (fragmentStack.size() > 2){
+                /*while (fragmentStack.size() > 2){
                     fragmentStack.pop();
-                }
+                }*/
 
                 fragmentStack.push(mainSongFragment);
                 swapColors(fragmentStack.peek());
@@ -123,9 +123,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
             public void onClick(View v) {
                 active.push(ALBUM);
 
-                while (fragmentStack.size() > 2){
+                /*while (fragmentStack.size() > 2){
                     fragmentStack.pop();
-                }
+                }*/
 
                 switch(albumStat) {
                     case ALBUM:
@@ -150,9 +150,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
             public void onClick(View v) {
                 active.push(ARTIST);
 
-                while (fragmentStack.size() > 2){
+                /*while (fragmentStack.size() > 2){
                     fragmentStack.pop();
-                }
+                }*/
 
                 switch(artistStat) {
                     case ARTIST:

@@ -67,14 +67,14 @@ public class ArtistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
-        /*backButton = (Button) v.findViewById(R.id.backButton);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.back();
-            }
-        });*/
+//        backButton = (Button) v.findViewById(R.id.backButton);
+//
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mListener.up();
+//            }
+//        });
 
         artistView = (RecyclerView) v.findViewById(R.id.artistView);
 
@@ -121,6 +121,6 @@ public class ArtistFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int source, String value);
-        boolean back();
+        void up();
     }
 }

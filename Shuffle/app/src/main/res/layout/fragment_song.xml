@@ -5,29 +5,35 @@
     android:orientation="vertical"
     tools:context="edu.mobapde.selina.shuffle.SongFragment">
 
-    <!--<LinearLayout
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="@color/colorPrimary">-->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+            <!--android:textSize="18sp"-->
+            <!--android:text="Songs"-->
+            <!--android:id="@+id/header"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@android:color/white"/>-->
+        <!-- -->
+    <!--</LinearLayout>-->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:textSize="18sp"
-            android:text="Songs"
-            android:id="@+id/header"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"/>
+        android:layout_height="wrap_content">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:id="@+id/backButton"/>
-    </LinearLayout>-->
-
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"

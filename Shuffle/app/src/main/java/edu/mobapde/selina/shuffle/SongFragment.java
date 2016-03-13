@@ -35,6 +35,8 @@ public class SongFragment extends Fragment {
     private RecyclerView songView;
     private Button backButton;
 
+    private boolean hideBack;
+
     private List<Song> songs;
 
     private SongAdapter sa;
@@ -48,6 +50,7 @@ public class SongFragment extends Fragment {
     public SongFragment() {
         // Required empty public constructor
         songs = new ArrayList<Song>();
+        hideBack = false;
     }
 
     /**
@@ -114,14 +117,19 @@ public class SongFragment extends Fragment {
         songView = (RecyclerView)v.findViewById(R.id.songView);
         songView.setAdapter(sa); //change this later or else
         songView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
-
-        /*backButton = (Button)v.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.back();
-            }
-        });*/
+        backButton = (Button)v.findViewById(R.id.backButton);
+        if( hideBack ) {
+            backButton.setVisibility(View.GONE);
+        } else {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.up();
+                    }
+                }
+            });
+        }
         return v;
     }
 
@@ -130,6 +138,10 @@ public class SongFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(songId, checked);
         }
+    }
+
+    public void hideBack() {
+        hideBack = true;
     }
 
     public void setSongs(ArrayList<Long> songs) {
@@ -168,6 +180,6 @@ public class SongFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(long songId, boolean checked);
-        boolean back();
+        void up();
     }
 }

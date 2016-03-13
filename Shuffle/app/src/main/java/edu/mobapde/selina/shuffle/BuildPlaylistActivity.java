@@ -1,5 +1,9 @@
 package edu.mobapde.selina.shuffle;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -90,6 +94,9 @@ public class BuildPlaylistActivity extends AppCompatActivity
         mainSongFragment = SongFragment.newInstance(null,sel);
         mainAlbumFragment = AlbumFragment.newInstance(null);
         mainArtistFragment = ArtistFragment.newInstance();
+        mainSongFragment.hideBack();
+        mainAlbumFragment.hideBack();
+
         fragmentStack.push(mainSongFragment);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -256,6 +263,34 @@ public class BuildPlaylistActivity extends AppCompatActivity
     }
 
     @Override
+    public void up() {
+        switch(active.peek()) {
+            case ARTIST:
+                switch(artistStat) {
+                    case ALBUM:
+                        artistStat = ARTIST;
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment,mainArtistFragment).commit();
+                        break;
+                    case SONG:
+                        artistStat = ALBUM;
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.buildFragment,artistAlbumFragment).commit();
+                        break;
+                }
+                break;
+            case ALBUM:
+                if( albumStat == SONG ) {
+                    albumStat = ALBUM;
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.buildFragment,mainAlbumFragment).commit();
+                }
+                break;
+            default:
+        }
+    }
+
+    @Override
     public void onFragmentInteraction(long songId, boolean checked) {
         Log.i("BuildPlaylistActivity","START onFragmentInteraction");
         if( checked ) {
@@ -284,26 +319,47 @@ public class BuildPlaylistActivity extends AppCompatActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 ) {
-            if( back() ) return true;
+            (new DialogFragment() {
+                @Override
+                public Dialog onCreateDialog(Bundle savedInstanceState) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                            .setTitle("Exiting")
+                            .setMessage("Are you sure you want to exit without saving?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getActivity().finish();
+                                    dismiss();
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismiss();
+                                }
+                            });
+                    return builder.create();
+                }
+            }).show(getFragmentManager(),"");
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public boolean back() {
-        if( active.size() > 1 ) {
-            active.pop();
-            fragmentStack.pop();
-            swapColors(fragmentStack.peek());
-            if( fragmentStack.peek() instanceof SongFragment ) {
-                ((SongFragment) fragmentStack.peek()).setSongs(songs);
-            }
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.buildFragment, fragmentStack.peek()).commit();
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean back() {
+//        if( active.size() > 1 ) {
+//            active.pop();
+//            fragmentStack.pop();
+//            swapColors(fragmentStack.peek());
+//            if( fragmentStack.peek() instanceof SongFragment ) {
+//                ((SongFragment) fragmentStack.peek()).setSongs(songs);
+//            }
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.buildFragment, fragmentStack.peek()).commit();
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     public void swapColors(Fragment fragment) {
         if( fragment.equals(mainArtistFragment)/*fragment instanceof ArtistFragment*/ ) {

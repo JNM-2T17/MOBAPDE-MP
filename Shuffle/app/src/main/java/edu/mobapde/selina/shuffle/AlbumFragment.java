@@ -34,11 +34,13 @@ public class AlbumFragment extends Fragment {
     private RecyclerView albumView;
     private AlbumAdapter aa;
     private Button backBtn;
+    private boolean hideBack;
 
     private OnFragmentInteractionListener mListener;
 
     public AlbumFragment() {
         // Required empty public constructor
+        hideBack = false;
     }
 
     /**
@@ -90,13 +92,19 @@ public class AlbumFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_album, container, false);
-        /*backBtn = (Button) v.findViewById(R.id.backButton);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.back();
-            }
-        });*/
+        backBtn = (Button) v.findViewById(R.id.backButton);
+        if( hideBack ) {
+            backBtn.setVisibility(View.GONE);
+        } else {
+            backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.up();
+                    }
+                }
+            });
+        }
         albumView = (RecyclerView) v.findViewById(R.id.albumView);
         albumView.setAdapter(aa);
         albumView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
@@ -108,6 +116,10 @@ public class AlbumFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(BuildPlaylistActivity.ALBUM, albumName);
         }
+    }
+
+    public void hideBack() {
+        hideBack = true;
     }
 
     @Override
@@ -140,7 +152,7 @@ public class AlbumFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int fragmentType, String value);
-        boolean back();
+        void up();
     }
 
 }

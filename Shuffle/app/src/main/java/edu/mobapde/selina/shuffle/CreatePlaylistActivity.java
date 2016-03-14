@@ -7,15 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class CreatePlaylistActivity extends AppCompatActivity {
     public static final String ID_KEY = "id";
     public static final String NAME_KEY = "name";
     private DBManager dbm;
 
-    private ImageButton addButton;
+    private TextView addButton;
     private RecyclerView playlistView;
     private PlaylistAdapter pa;
 
@@ -23,7 +22,7 @@ public class CreatePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_playlist);
-        addButton = (ImageButton)findViewById(R.id.addButton);
+        addButton = (TextView)findViewById(R.id.addButton);
         playlistView = (RecyclerView)findViewById(R.id.playlistView);
 
         dbm = new DBManager(getBaseContext());

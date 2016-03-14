@@ -8,24 +8,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_gradient_1"
-        android:gravity="end">
-        <ImageButton
+        android:background="@drawable/background_gradient_1">
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/addButton"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_gravity="end"
-            android:padding="@dimen/activity_horizontal_margin"/>
+            android:layout_height="match_parent"
+            android:id="@+id/playlistButton"
+            android:gravity="center"
+            android:drawableTop="@android:drawable/ic_btn_speak_now"
+            android:textSize="18sp"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="Playlists"
+            android:background="@drawable/background_gradient_2"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="3.3333dp"
         android:background="@color/colorPrimaryDark"></LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/addButton"
-        android:id="@+id/playlistView">
-    </android.support.v7.widget.RecyclerView>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addButton"
+            android:text="Create new playlist..."
+            android:textStyle="italic"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark"></LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/playlistView">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 </LinearLayout>

@@ -75,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Playlist Name"
+            android:hint="Playlist name here"
             android:id="@+id/playlistField"
             android:textColor="#ffffff"/>
         <Button

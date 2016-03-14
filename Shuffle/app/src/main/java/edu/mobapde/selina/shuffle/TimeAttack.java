@@ -98,6 +98,7 @@ public class TimeAttack extends AppCompatActivity {
         scoreLabel = (TextView)findViewById(R.id.score);
         timer = (TextView)findViewById(R.id.timer);
 
+        timer.setVisibility(View.GONE);
         skipButton.setVisibility(View.GONE);
         guessField.setVisibility(View.GONE);
         guessButton.setVisibility(View.GONE);
@@ -180,6 +181,7 @@ public class TimeAttack extends AppCompatActivity {
         currSong = -1;
         score = 0;
         gameStart = true;
+        timer.setVisibility(View.VISIBLE);
         skipButton.setVisibility(View.VISIBLE);
         guessField.setVisibility(View.VISIBLE);
         guessButton.setVisibility(View.VISIBLE);
@@ -194,10 +196,10 @@ public class TimeAttack extends AppCompatActivity {
             public void run() {
                 timeLeft--;
                 convertTime();
-                if( timeLeft == 0 ) {
+                if (timeLeft == 0) {
                     fifteen.removeCallbacks(songTimer);
                     guess();
-                    (new DialogFragment(){
+                    (new DialogFragment() {
                         @Override
                         public Dialog onCreateDialog(Bundle savedInstanceState) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
@@ -214,10 +216,10 @@ public class TimeAttack extends AppCompatActivity {
                         }
                     }).show(getFragmentManager(), "");
                 } else {
-                    fifteen.postDelayed(this,1000);
+                    fifteen.postDelayed(this, 1000);
                 }
             }
-        },1000);
+        }, 1000);
         nextSong();
     }
 
@@ -257,15 +259,20 @@ public class TimeAttack extends AppCompatActivity {
     }
 
     public void stop() {
-        mMediaPlayer.stop();
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        if( mMediaPlayer != null ) {
+            try {
+                mMediaPlayer.stop();
+            } catch(IllegalStateException ise) {}
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
     }
 
     public void finishGame() {
         fifteen.removeCallbacks(songTimer);
         fifteen.removeCallbacks(gameTimer);
         stop();
+        mMediaPlayer.release();
         gameStart = false;
         startButton.setText("Start");
         skipButton.setVisibility(View.GONE);

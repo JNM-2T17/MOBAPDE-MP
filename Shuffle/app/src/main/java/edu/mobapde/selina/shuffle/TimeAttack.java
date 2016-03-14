@@ -199,6 +199,7 @@ public class TimeAttack extends AppCompatActivity {
                 if (timeLeft == 0) {
                     fifteen.removeCallbacks(songTimer);
                     guess();
+                    stop();
                     (new DialogFragment() {
                         @Override
                         public Dialog onCreateDialog(Bundle savedInstanceState) {

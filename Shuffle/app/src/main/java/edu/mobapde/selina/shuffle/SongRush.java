@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class SongRush extends AppCompatActivity {
     private boolean gameStart;
     private int score;
     private int listType;
+    private String list;
     private int type;
     private String value;
     private long pId;
@@ -64,9 +66,11 @@ public class SongRush extends AppCompatActivity {
             case BuildPlaylistActivity.SONG:
                 playlist = mp.getAllSongs();
                 gameLabel.setText("All Songs");
+                this.list = "All Songs";
                 break;
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
+                this.list = pId + "";
                 Playlist p = dbm.getPlayList(pId);
                 gameLabel.setText(p.name());
                 playlist = new ArrayList<Song>();
@@ -76,11 +80,13 @@ public class SongRush extends AppCompatActivity {
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                this.list = value;
                 gameLabel.setText(value);
                 playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                this.list = value;
                 gameLabel.setText(value);
                 playlist = mp.getSongsOf(value);
                 break;
@@ -292,7 +298,8 @@ public class SongRush extends AppCompatActivity {
     }
 
     public void saveGame() {
-
+        dbm.addScore(GameModeDialog.SONG_RUSH,listType,list,score);
+        Toast.makeText(getBaseContext(),"Score Saved!",Toast.LENGTH_LONG).show();
     }
 
     public boolean lcsWord(String str1,String str2) {

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class TimeAttack extends AppCompatActivity {
     private int score;
     private int listType;
     private int type;
+    private String list;
     private String value;
     private long pId;
     private String compare;
@@ -65,10 +67,12 @@ public class TimeAttack extends AppCompatActivity {
         switch(listType) {
             case BuildPlaylistActivity.SONG:
                 playlist = mp.getAllSongs();
+                this.list = "All Songs";
                 gameLabel.setText("All Songs");
                 break;
             case BuildPlaylistActivity.PLAYLIST:
                 pId = list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
+                this.list = "" + list.getExtras().getLong(SelectPlaylistActivity.PLAYLIST);
                 Playlist p = dbm.getPlayList(pId);
                 gameLabel.setText(p.name());
                 playlist = new ArrayList<Song>();
@@ -78,11 +82,13 @@ public class TimeAttack extends AppCompatActivity {
                 break;
             case BuildPlaylistActivity.ALBUM:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                this.list = value;
                 gameLabel.setText(value);
                 playlist = mp.getSongsIn(value);
                 break;
             case BuildPlaylistActivity.ARTIST:
                 value = list.getExtras().getString(SelectPlaylistActivity.VAL);
+                this.list = value;
                 gameLabel.setText(value);
                 playlist = mp.getSongsOf(value);
                 break;
@@ -256,7 +262,10 @@ public class TimeAttack extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else finishGame();
+        } else {
+            currSong--;
+            finishGame();
+        }
     }
 
     public void stop() {
@@ -286,7 +295,7 @@ public class TimeAttack extends AppCompatActivity {
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                         .setTitle("Game Finished")
-                        .setMessage("You got " + score + "/" + playlist.size() + "!")
+                        .setMessage("You got " + score + "/" + (currSong + 1) + "!")
                         .setPositiveButton("Save Stats", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -305,7 +314,8 @@ public class TimeAttack extends AppCompatActivity {
     }
 
     public void saveGame() {
-
+        dbm.addScore(GameModeDialog.TIME_ATTACK,listType,list,score);
+        Toast.makeText(getBaseContext(), "Score Saved!", Toast.LENGTH_LONG).show();
     }
 
     public boolean lcsWord(String str1,String str2) {

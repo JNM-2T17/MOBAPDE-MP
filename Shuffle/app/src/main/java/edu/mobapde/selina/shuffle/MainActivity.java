@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -90,13 +89,9 @@ public class MainActivity extends AppCompatActivity {
         leadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent lead = new Intent();
+                Intent lead = new Intent();
                 lead.setClass(getBaseContext(),LeaderboardActivity.class);
-                startActivity(lead);*/
-                Toast.makeText(getBaseContext(),
-                        "Steam servers are offline.\nPlease try again later.",
-                        Toast.LENGTH_LONG)
-                        .show();
+                startActivity(lead);
             }
         });
 

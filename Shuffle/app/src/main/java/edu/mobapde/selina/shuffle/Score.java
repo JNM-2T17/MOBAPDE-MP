@@ -21,34 +21,25 @@ public class Score {
     private String artist;
     private int playlist;
     private String album;
-    private int type;
     private int score;
 
     public Score(int score,int gameType) {
-        type = TYPE_WHOLE;
         this.score = score;
         this.gameType = gameType;
     }
 
     public Score(int score, String artist,boolean isArtist,int gameType) {
         if( isArtist ) {
-            type = TYPE_ARTIST;
             this.artist = artist;
         } else {
-            type = TYPE_ALBUM;
             this.album = artist;
         }
         this.gameType = gameType;
     }
 
     public Score(int score, int playlist,int gameType) {
-        type = TYPE_PLAYLIST;
         this.score = score;
         this.gameType = gameType;
-    }
-
-    public int type() {
-        return type;
     }
 
     public int gameType() { return gameType; }
@@ -65,5 +56,51 @@ public class Score {
 
     public int score() {
         return score;
+    }
+
+    public void setGameType(int gameType) {
+        this.gameType = gameType;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setPlaylist(int playlist) {
+        this.playlist = playlist;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getListType() {
+        if( artist != null ) {
+            return BuildPlaylistActivity.ARTIST;
+        } else if( album != null ) {
+            return BuildPlaylistActivity.ALBUM;
+        } else if( playlist != 0 ){
+            return BuildPlaylistActivity.PLAYLIST;
+        } else {
+            return BuildPlaylistActivity.SONG;
+        }
+    }
+
+    public String value() {
+        if( artist != null ) {
+            return artist;
+        } else if( album != null ) {
+            return album;
+        } else if(playlist != 0){
+            return "" + playlist;
+        } else return "";
+    }
+
+    public String toString() {
+        return gameType + " " + getListType() + " " + value() + " " + score;
     }
 }

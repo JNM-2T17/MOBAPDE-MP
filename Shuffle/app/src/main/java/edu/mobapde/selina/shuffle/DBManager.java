@@ -16,7 +16,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String SCHEMA = "db_shuffle";
 
     public DBManager(Context context) {
-        super(context, SCHEMA, null, 6);
+        super(context, SCHEMA, null, 7);
     }
 
     @Override
@@ -33,15 +33,15 @@ public class DBManager extends SQLiteOpenHelper {
                 "    status INTEGER DEFAULT 1," +
                 "    dateAdded DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "    PRIMARY KEY(" + Playlist.SUB_COLUMN_ID + "," + Playlist.SUB_COLUMN_SONG
-                    + ",dateAdded)," +
+                + ",dateAdded)," +
                 "    FOREIGN KEY (" + Playlist.SUB_COLUMN_ID + ") REFERENCES sh_playlist("
-                    + Playlist.COLUMN_ID + ")" +
+                + Playlist.COLUMN_ID + ")" +
                 ");");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Score.TABLE + " (" +
                 "    " + Score.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "    " + Score.COLUMN_ARTIST + " TEXT," +
                 "    " + Score.COLUMN_PLAYLIST + " INTEGER," +
-                "    " + Score.COLUMN_ALBUM + " TEXT NOT NULL," +
+                "    " + Score.COLUMN_ALBUM + " TEXT," +
                 "    " + Score.COLUMN_TYPE + " INTEGER NOT NULL," +
                 "    " + Score.COLUMN_SCORE + " INTEGER NOT NULL," +
                 "    status INTEGER DEFAULT 1," +
@@ -60,13 +60,17 @@ public class DBManager extends SQLiteOpenHelper {
                 playlists.add(getPlaylistSub(db,c.getLong(c.getColumnIndex(Playlist.COLUMN_ID))));
             } while(c.moveToNext());
         }
+
         String sql = "DROP TABLE IF EXISTS " + Playlist.TABLE + ";";
         db.execSQL(sql);
+
         sql = "DROP TABLE IF EXISTS " + Playlist.SUB_TABLE + ";";
         db.execSQL(sql);
-        //get scores
+
+        ArrayList<Score> scores = getScores(db);
         sql = "DROP TABLE IF EXISTS " + Score.TABLE;
         db.execSQL(sql);
+
         onCreate(db);
         for(Playlist p: playlists) {
             long[] songs = new long[p.size()];
@@ -75,6 +79,95 @@ public class DBManager extends SQLiteOpenHelper {
             }
             addPlaylistSub(db,p.name(),songs);
         }
+        for( Score s : scores ) {
+            addScore(db,s.getListType(),s.getListType(),s.value(),s.score());
+        }
+    }
+
+    public void addScore(int mode,int type,String value, int score) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        addScore(db, mode, type, value, score);
+    }
+
+    public void addScore(SQLiteDatabase db,int mode, int type, String value, int score) {
+        ContentValues cv = new ContentValues();
+        cv.put(Score.COLUMN_SCORE, score);
+        cv.put(Score.COLUMN_TYPE, type);
+        switch(type) {
+            case BuildPlaylistActivity.PLAYLIST:
+                cv.put(Score.COLUMN_PLAYLIST,Integer.parseInt(value));
+                break;
+            case BuildPlaylistActivity.ALBUM:
+                cv.put(Score.COLUMN_ALBUM,value);
+                break;
+            case BuildPlaylistActivity.ARTIST:
+                cv.put(Score.COLUMN_ARTIST,value);
+                break;
+            default:
+        }
+
+        db.insert(Score.TABLE, null, cv);
+    }
+
+    public ArrayList<Score> getScores() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        return getScores(db);
+    }
+
+    public ArrayList<Score> getScores(SQLiteDatabase db) {
+        Cursor c = db.query(Score.TABLE, null, null, null, null, null, Score.COLUMN_SCORE + " DESC");
+        ArrayList<Score> scores = new ArrayList<Score>();
+        if( c.moveToFirst()) {
+            do {
+                Score s = new Score(c.getInt(c.getColumnIndex(Score.COLUMN_SCORE))
+                        ,c.getInt(c.getColumnIndex(Score.COLUMN_TYPE)));
+                boolean isArtist =  !c.isNull(c.getColumnIndex(Score.COLUMN_ARTIST));
+                boolean isAlbum =  !c.isNull(c.getColumnIndex(Score.COLUMN_ALBUM));
+                boolean isPlaylist =  !c.isNull(c.getColumnIndex(Score.COLUMN_PLAYLIST));
+                if( isArtist ) {
+                    s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                } else if( isAlbum ) {
+                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                } else if( isPlaylist ){
+                    s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
+                }
+                scores.add(s);
+            }while(c.moveToNext());
+        }
+        return scores;
+    }
+
+    public ArrayList<Score> getScores(int gameType) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        return getScores(db,gameType);
+    }
+
+    public ArrayList<Score> getScores(SQLiteDatabase db,int gameType) {
+        Cursor c = db.query(Score.TABLE, null, Score.COLUMN_TYPE + " = ?", new String[] {
+                "" + gameType
+        }, null, null, Score.COLUMN_SCORE + " DESC");
+        ArrayList<Score> scores = new ArrayList<Score>();
+        if( c.moveToFirst()) {
+            do {
+                Score s = new Score(c.getInt(c.getColumnIndex(Score.COLUMN_SCORE))
+                        ,c.getInt(c.getColumnIndex(Score.COLUMN_TYPE)));
+                boolean isArtist =  !c.isNull(c.getColumnIndex(Score.COLUMN_ARTIST));
+                boolean isAlbum =  !c.isNull(c.getColumnIndex(Score.COLUMN_ALBUM));
+                boolean isPlaylist =  !c.isNull(c.getColumnIndex(Score.COLUMN_PLAYLIST));
+                if( isArtist ) {
+                    s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                } else if( isAlbum ) {
+                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                } else if( isPlaylist ){
+                    s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
+                }
+                scores.add(s);
+            }while(c.moveToNext());
+        }
+        return scores;
     }
 
     public long addPlaylist(String playlistName,long[] songs) {

@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.mobapde.selina.shuffle.SongRush">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="Start Game"
             android:id="@+id/startButton"/>
     </RelativeLayout>
@@ -34,13 +37,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Guess Here"
+            android:hint="Song name?"
+            android:inputType="text"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/guessField" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Guess"
             android:textSize="20sp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:id="@+id/guessButton"/>
     </LinearLayout>
     <TextView
@@ -63,6 +72,8 @@
             android:textSize="50sp"
             android:padding="30dp"
             android:layout_centerInParent="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:id="@+id/skipButton"/>
     </RelativeLayout>
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class SelectPlaylistActivity extends AppCompatActivity
                                     implements SelectPlaylistFragment.OnFragmentInteractionListener,
@@ -23,7 +24,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
     private Button playlistButton;
     private Button albumButton;
     private Button artistButton;
-    private Button allButton;
+    private TextView allButton;
 
     private Fragment playlistFragment;
     private Fragment albumFragment;
@@ -42,7 +43,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
         playlistButton = (Button)findViewById(R.id.playlistButton);
         albumButton = (Button)findViewById(R.id.albumButton);
         artistButton = (Button)findViewById(R.id.artistButton);
-        allButton = (Button)findViewById(R.id.allButton);
+        allButton = (TextView)findViewById(R.id.allButton);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int level = sp.getInt(MainActivity.LEVEL,SettingsActivity.TITLE);
@@ -152,6 +153,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
                 artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
             }
+            allButton.setVisibility(View.GONE);
         } else if( fragment.equals(albumFragment)/*fragment instanceof AlbumFragment*/ ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
@@ -162,6 +164,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
                 artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
             }
+            allButton.setVisibility(View.GONE);
         } else if ( fragment.equals(playlistFragment)/*fragment instanceof SongFragment*/ ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 playlistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
@@ -172,6 +175,7 @@ public class SelectPlaylistActivity extends AppCompatActivity
                 albumButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
                 artistButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
             }
+            allButton.setVisibility(View.VISIBLE);
         }
     }
 

@@ -26,18 +26,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/allButton"
-            android:gravity="center"
-            android:drawableTop="@android:drawable/ic_media_play"
-            android:textSize="18sp"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:text="All Songs"
-            android:background="@drawable/background_gradient_1"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:id="@+id/albumButton"
             android:gravity="center"
             android:drawableTop="@android:drawable/ic_menu_slideshow"
@@ -65,10 +53,30 @@
         android:layout_height="3.3333dp"
         android:background="@color/colorPrimaryDark"></LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/selectFragment">
-    </RelativeLayout>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/allButton"
+            android:text="Play ALL songs from this device..."
+            android:textStyle="italic"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"></LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/selectFragment">
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

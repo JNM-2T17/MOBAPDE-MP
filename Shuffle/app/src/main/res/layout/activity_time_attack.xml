@@ -23,6 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="Start Game"
             android:id="@+id/startButton"/>
     </RelativeLayout>
@@ -34,13 +36,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Guess Here"
+            android:hint="Song name?"
+            android:inputType="text"
+            android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/guessField" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Guess"
             android:textSize="20sp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:id="@+id/guessButton"/>
     </LinearLayout>
     <RelativeLayout
@@ -75,6 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Skip"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:textSize="50sp"
             android:padding="30dp"
             android:layout_centerInParent="true"

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -116,6 +120,7 @@ public class SongRush extends AppCompatActivity {
                 } else {
                     startButton.setText("Stop");
                     startGame();
+                    guessField.requestFocus();
                 }
             }
         });
@@ -131,8 +136,47 @@ public class SongRush extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 guess();
+                guessField.requestFocus();
             }
         });
+
+        guessField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    //if the enter key was pressed, then hide the keyboard and do whatever needs doing.
+                    guessField.requestFocus();
+                    guess();
+                    InputMethodManager imm = (InputMethodManager) getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(guessField.getApplicationWindowToken(), 0);
+                }
+                return false;
+            }
+        });
+
+        guessField.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (guessField.getText().toString().isEmpty()){
+                    guessButton.setText("Skip");
+                } else {
+                    guessButton.setText("Guess");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
+
     }
 
     @Override

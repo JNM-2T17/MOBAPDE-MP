@@ -60,8 +60,6 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
             }
         });
 
-
-
     }
 
     @Override

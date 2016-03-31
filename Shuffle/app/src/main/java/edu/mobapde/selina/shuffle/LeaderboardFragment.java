@@ -61,7 +61,7 @@ public class LeaderboardFragment extends Fragment {
         }
         DBManager dbm = new DBManager(getContext());
         Cursor c = dbm.getScoresAsCursor(gameMode);
-        la = new LeaderboardAdapter(getActivity().getBaseContext(),c);
+        la = new LeaderboardAdapter(getActivity().getBaseContext(),c,dbm);
     }
 
     @Override

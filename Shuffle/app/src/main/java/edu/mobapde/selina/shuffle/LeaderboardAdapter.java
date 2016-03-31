@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,13 @@ import android.widget.TextView;
  * Created by XPS 13 on 3/30/2016.
  */
 public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAdapter.LeaderboardHolder> {
+
+    private DBManager dbm;
+
+    public LeaderboardAdapter(Context context, Cursor cursor, DBManager dbm){
+        super(context, cursor);
+        this.dbm = dbm;
+    }
 
     public LeaderboardAdapter(Context context, Cursor cursor) {
         super(context, cursor);
@@ -71,24 +79,26 @@ public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAda
 
         public void setScore(Score score){
             this.score = score;
+            Log.i("game type","game type" + score.gameType());
             switch(score.gameType()){
                 case Score.TYPE_WHOLE:
                     leaderboardLabel.setText("All songs");
                     leaderboardLabel.setTypeface(leaderboardLabel.getTypeface(), Typeface.ITALIC);
                     break;
                 case Score.TYPE_ARTIST:
-                    leaderboardLabel.setText(score.artist());
+                    leaderboardLabel.setText("Artist" + score.artist());
                     break;
                 case Score.TYPE_PLAYLIST:
                     if (score.playlist() == 0){
                         leaderboardLabel.setText("All songs");
                         leaderboardLabel.setTypeface(leaderboardLabel.getTypeface(), Typeface.ITALIC);
                     } else {
-                        leaderboardLabel.setText("Playlist #" + score.playlist());
+                        Playlist playlist = dbm.getPlayList(score.playlist());
+                        leaderboardLabel.setText(playlist.name());
                     }
                     break;
                 case Score.TYPE_ALBUM:
-                    leaderboardLabel.setText(score.album());
+                    leaderboardLabel.setText("Album " + score.album());
                     break;
             }
             leaderboardScore.setText(score.score() + "");

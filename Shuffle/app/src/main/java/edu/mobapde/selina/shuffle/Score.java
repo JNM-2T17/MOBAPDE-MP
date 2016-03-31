@@ -12,10 +12,10 @@ public class Score {
     public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_SCORE = "score";
     public static final String COLUMN_MODE = "mode";
-    public static final int TYPE_WHOLE = 0;
+    public static final int TYPE_WHOLE = 2;
     public static final int TYPE_ARTIST = 1;
-    public static final int TYPE_PLAYLIST = 2;
-    public static final int TYPE_ALBUM = 3;
+    public static final int TYPE_PLAYLIST = 3;
+    public static final int TYPE_ALBUM = 0;
     public static final int SONG_RUSH = 4;
     public static final int TIME_ATTACK = 5;
     private int gameType;

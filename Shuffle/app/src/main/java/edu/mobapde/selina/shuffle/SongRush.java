@@ -228,39 +228,6 @@ public class SongRush extends AppCompatActivity {
         nextSong();
     }
 
-//    public void startListen() {
-//        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-//        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Try speaking");
-//        try {
-//            startActivityForResult(intent, SPEECH );
-//        } catch(ActivityNotFoundException anfe) {
-//            Toast.makeText(getApplicationContext(),
-//                    "Speech not supported",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//
-//        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
-//        sr.startListening(intent);
-//        Log.i("111111", "11111111");
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch(requestCode) {
-//            case SPEECH:
-//                if( resultCode == RESULT_OK && data != null ) {
-//                    ArrayList<String> result = data
-//                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-//                    guessField.setText(result.get(0));
-//                }
-//                break;
-//            default:
-//        }
-//    }
-
     public void nextSong() {
         guessField.setText("");
         if( currSong > -1 ) {
@@ -291,7 +258,6 @@ public class SongRush extends AppCompatActivity {
                 },15000);
                 mMediaPlayer.seekTo(start);
                 mMediaPlayer.start();
-//                startListen();
             } catch (IOException e) {
                 e.printStackTrace();
             }

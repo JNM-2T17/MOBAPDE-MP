@@ -16,7 +16,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String SCHEMA = "db_shuffle";
 
     public DBManager(Context context) {
-        super(context, SCHEMA, null, 7);
+        super(context, SCHEMA, null, 8);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class DBManager extends SQLiteOpenHelper {
             addPlaylistSub(db,p.name(),songs);
         }
         for( Score s : scores ) {
-            addScore(db,s.mode(),s.getListType(),s.value(),s.score());
+            addScore(db,GameModeDialog.SONG_RUSH,s.getListType(),s.value(),s.score());
         }
     }
 
@@ -89,7 +89,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         addScore(db, mode, type, value, score);
-        Log.i("Database","Yay");
+        Log.i("Database", "Yay");
     }
 
     public void addScore(SQLiteDatabase db,int mode, int type, String value, int score) {
@@ -178,7 +178,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         Log.i("You suck","Data retrieved");
-        return getScoresAsCursor(db,gameMode);
+        return getScoresAsCursor(db, gameMode);
     }
 
     public Cursor getScoresAsCursor(SQLiteDatabase db,int gameMode) {

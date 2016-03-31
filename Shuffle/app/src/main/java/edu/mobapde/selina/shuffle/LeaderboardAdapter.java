@@ -14,10 +14,14 @@ import android.widget.TextView;
  */
 public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAdapter.LeaderboardHolder> {
 
-    private int placeNo = 1;
-
     public LeaderboardAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+    }
+
+    @Override
+    public void onBindViewHolder(LeaderboardHolder viewHolder, int position) {
+        super.onBindViewHolder(viewHolder,position);
+        viewHolder.setPosition(position + 1);
     }
 
     @Override
@@ -67,8 +71,6 @@ public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAda
 
         public void setScore(Score score){
             this.score = score;
-            leaderboardPlace.setText(placeNo + "");
-            placeNo++;
             switch(score.gameType()){
                 case Score.TYPE_WHOLE:
                     leaderboardLabel.setText("All songs");
@@ -90,6 +92,10 @@ public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAda
                     break;
             }
             leaderboardScore.setText(score.score() + "");
+        }
+
+        public void setPosition(int position) {
+            leaderboardPlace.setText("" + position);
         }
     }
 

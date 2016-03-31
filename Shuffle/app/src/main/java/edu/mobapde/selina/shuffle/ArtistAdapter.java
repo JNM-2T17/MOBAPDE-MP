@@ -1,5 +1,6 @@
 package edu.mobapde.selina.shuffle;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,9 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
         public void setArtist(Artist s) {
             this.s = s;
             artistLabel.setText(s.getName());
+            if (s.getName().equalsIgnoreCase("<unknown>")){
+                artistLabel.setTypeface(artistLabel.getTypeface(), Typeface.ITALIC);
+            }
         }
     }
 

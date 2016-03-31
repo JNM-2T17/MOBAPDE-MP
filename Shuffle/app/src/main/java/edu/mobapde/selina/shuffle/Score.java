@@ -11,6 +11,7 @@ public class Score {
     public static final String COLUMN_ALBUM = "album";
     public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_SCORE = "score";
+    public static final String COLUMN_MODE = "mode";
     public static final int TYPE_WHOLE = 0;
     public static final int TYPE_ARTIST = 1;
     public static final int TYPE_PLAYLIST = 2;
@@ -22,6 +23,7 @@ public class Score {
     private int playlist;
     private String album;
     private int score;
+    private int mode;
 
     public Score(int score,int gameType) {
         this.score = score;
@@ -58,6 +60,10 @@ public class Score {
         return score;
     }
 
+    public int mode() {
+        return mode;
+    }
+
     public void setGameType(int gameType) {
         this.gameType = gameType;
     }
@@ -76,6 +82,10 @@ public class Score {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public int getListType() {

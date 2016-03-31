@@ -9,7 +9,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:padding="@dimen/activity_horizontal_margin">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,13 +18,6 @@
             android:text="Maroon 5"
             android:textSize="18sp"
             android:id="@+id/artistLabel"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="Number of albums here"
-            android:id="@+id/artistAlbumNumLabel"/>
     </LinearLayout>
 
     <LinearLayout

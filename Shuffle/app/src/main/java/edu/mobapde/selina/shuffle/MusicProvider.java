@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class MusicProvider {
     private ContentResolver cr;
     private Uri uri;
+    private ArrayList<Bitmap> albumArts = new ArrayList<>();
     final public static Uri sArtworkUri = Uri
             .parse("content://media/external/audio/albumart");
 
@@ -85,17 +88,19 @@ public class MusicProvider {
                 Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
                 Bitmap albumArt = null;
 
-                /*
-                try {
-                    albumArt = MediaStore.Images.Media.getBitmap(
-                            cr, albumArtUri);
-                    albumArt = Bitmap.createScaledBitmap(albumArt, 64, 64, true);
 
+                try {
+                    albumArt = MediaStore.Images.Media.getBitmap(cr, albumArtUri);
+                    if (!albumArts.contains(albumArt)){
+
+                        albumArt = Bitmap.createScaledBitmap(albumArt, 128, 128, true);
+                        albumArts.add(albumArt);
+                    }
                 } catch (FileNotFoundException exception) {
                     //exception.printStackTrace();
                 } catch (IOException e) {
                     //e.printStackTrace();
-                } */
+                }
 
                 if( albums.size() == 0 || !album.equals(albums.get(albums.size() - 1))) {
                     albums.add(new Album(album,artist,albumArt));
@@ -136,17 +141,17 @@ public class MusicProvider {
                 Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
                 Bitmap albumArt = null;
 
-                /*
                 try {
-                    albumArt = MediaStore.Images.Media.getBitmap(
-                            cr, albumArtUri);
-                    albumArt = Bitmap.createScaledBitmap(albumArt, 64, 64, true);
-
+                    albumArt = MediaStore.Images.Media.getBitmap(cr, albumArtUri);
+                    if (!albumArts.contains(albumArt)){
+                        albumArt = Bitmap.createScaledBitmap(albumArt, 128, 128, true);
+                        albumArts.add(albumArt);
+                    }
                 } catch (FileNotFoundException exception) {
                     //exception.printStackTrace();
                 } catch (IOException e) {
                     //e.printStackTrace();
-                } */
+                }
 
                 if( albums.size() == 0 || !album.equals(albums.get(albums.size() - 1))) {
                     albums.add(new Album(album,artist,albumArt));

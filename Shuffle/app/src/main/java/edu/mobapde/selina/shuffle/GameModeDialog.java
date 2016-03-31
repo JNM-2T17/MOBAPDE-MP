@@ -10,8 +10,8 @@ import android.os.Bundle;
  * Created by ryana on 3/11/2016.
  */
 public class GameModeDialog extends DialogFragment {
-    public static final int TIME_ATTACK = 0;
-    public static final int SONG_RUSH = 1;
+    public static final int TIME_ATTACK = 5;
+    public static final int SONG_RUSH = 4;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

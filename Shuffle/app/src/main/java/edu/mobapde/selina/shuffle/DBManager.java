@@ -44,6 +44,7 @@ public class DBManager extends SQLiteOpenHelper {
                 "    " + Score.COLUMN_ALBUM + " TEXT," +
                 "    " + Score.COLUMN_TYPE + " INTEGER NOT NULL," +
                 "    " + Score.COLUMN_SCORE + " INTEGER NOT NULL," +
+                "    " + Score.COLUMN_MODE + " INTEGER NOT NULL," +
                 "    status INTEGER DEFAULT 1," +
                 "    dateAdded DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "    FOREIGN KEY(" + Score.COLUMN_PLAYLIST + ") " +
@@ -80,7 +81,7 @@ public class DBManager extends SQLiteOpenHelper {
             addPlaylistSub(db,p.name(),songs);
         }
         for( Score s : scores ) {
-            addScore(db,s.getListType(),s.getListType(),s.value(),s.score());
+            addScore(db,s.mode(),s.getListType(),s.value(),s.score());
         }
     }
 
@@ -88,12 +89,14 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         addScore(db, mode, type, value, score);
+        Log.i("Database","Yay");
     }
 
     public void addScore(SQLiteDatabase db,int mode, int type, String value, int score) {
         ContentValues cv = new ContentValues();
         cv.put(Score.COLUMN_SCORE, score);
         cv.put(Score.COLUMN_TYPE, type);
+        cv.put(Score.COLUMN_MODE, mode);
         switch(type) {
             case BuildPlaylistActivity.PLAYLIST:
                 cv.put(Score.COLUMN_PLAYLIST,Integer.parseInt(value));
@@ -108,6 +111,7 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
         db.insert(Score.TABLE, null, cv);
+        Log.i("Database", "Yay");
     }
 
     public ArrayList<Score> getScores() {
@@ -129,7 +133,7 @@ public class DBManager extends SQLiteOpenHelper {
                 if( isArtist ) {
                     s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
                 } else if( isAlbum ) {
-                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ALBUM)));
                 } else if( isPlaylist ){
                     s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
                 }
@@ -160,7 +164,7 @@ public class DBManager extends SQLiteOpenHelper {
                 if( isArtist ) {
                     s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
                 } else if( isAlbum ) {
-                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ALBUM)));
                 } else if( isPlaylist ){
                     s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
                 }
@@ -168,6 +172,41 @@ public class DBManager extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         return scores;
+    }
+
+    public Cursor getScoresAsCursor(int gameMode) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Log.i("You suck","Data retrieved");
+        return getScoresAsCursor(db,gameMode);
+    }
+
+    public Cursor getScoresAsCursor(SQLiteDatabase db,int gameMode) {
+        Cursor c = db.query(Score.TABLE, null, Score.COLUMN_MODE + " = ?", new String[] {
+                "" + gameMode
+        }, null, null, Score.COLUMN_SCORE + " DESC");
+        return c;
+//        ArrayList<Score> scores = new ArrayList<Score>();
+//        if( c.moveToFirst()) {
+//            do {
+//                Score s = new Score(c.getInt(c.getColumnIndex(Score.COLUMN_SCORE))
+//                        ,c.getInt(c.getColumnIndex(Score.COLUMN_TYPE)));
+//                boolean isArtist =  !c.isNull(c.getColumnIndex(Score.COLUMN_ARTIST));
+//                boolean isAlbum =  !c.isNull(c.getColumnIndex(Score.COLUMN_ALBUM));
+//                boolean isPlaylist =  !c.isNull(c.getColumnIndex(Score.COLUMN_PLAYLIST));
+//                if( isArtist ) {
+//                    s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+//                } else if( isAlbum ) {
+//                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ALBUM)));
+//                } else if( isPlaylist ){
+//                    s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
+//                }
+//                s.setMode(c.getInt(c.getColumnIndex(Score.COLUMN_MODE)));
+//                scores.add(s);
+//            }while(c.moveToNext());
+//        }
+//        return scores;
+
     }
 
     public long addPlaylist(String playlistName,long[] songs) {

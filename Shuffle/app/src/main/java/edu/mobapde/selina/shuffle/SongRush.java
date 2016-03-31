@@ -321,22 +321,36 @@ public class SongRush extends AppCompatActivity {
         (new DialogFragment(){
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                        .setTitle("Game Finished")
-                        .setMessage("You got " + score + "/" + playlist.size() + "!")
-                        .setPositiveButton("Save Stats", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                saveGame();
-                                dismiss();
-                            }
-                        }).setNegativeButton("Don't Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dismiss();
-                            }
-                        });
-                return builder.create();
+                AlertDialog.Builder builder;
+                if (score > 0){
+                    builder = new AlertDialog.Builder(getActivity())
+                            .setTitle("Game Finished")
+                            .setMessage("You got " + score + " / " + playlist.size() + "!")
+                            .setPositiveButton("Save Stats", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    saveGame();
+                                    dismiss();
+                                }
+                            }).setNegativeButton("Don't Save", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismiss();
+                                }
+                            });
+                    return builder.create();
+                } else {
+                    builder = new AlertDialog.Builder(getActivity())
+                            .setTitle("Game Finished")
+                            .setMessage("Better luck next time.")
+                            .setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismiss();
+                                }
+                            });
+                    return builder.create();
+                }
             }
         }).show(getFragmentManager(), "");
     }
@@ -365,18 +379,6 @@ public class SongRush extends AppCompatActivity {
         int k = i;
         int l = j;
 
-//        String str = "";
-//        while( k != 0 && l != 0) {
-//            if( lcs[k][l] == lcs[k][l - 1]) {
-//                l--;
-//            } else if( lcs[k][l] == lcs[k - 1][l]) {
-//                k--;
-//            } else {
-//                str = str1.charAt(k - 1) + str;
-//                l--;
-//                k--;
-//            }
-//        }
         return lcs[i][j] * 2 >= Math.max(str1.length(), str2.length());
     }
 

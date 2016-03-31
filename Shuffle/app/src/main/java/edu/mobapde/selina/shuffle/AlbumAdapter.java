@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -54,12 +55,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
         private ImageView albumArt;
         private TextView albumLabel;
         private TextView artistLabel;
+        private LinearLayout albumPanel;
         public AlbumHolder(View itemView) {
             super(itemView);
             albumArt = (ImageView)itemView.findViewById(R.id.albumArt);
             albumLabel = (TextView)itemView.findViewById(R.id.albumLabel);
             artistLabel = (TextView) itemView.findViewById(R.id.artistLabel);
-            albumLabel.setOnClickListener(new View.OnClickListener() {
+            albumPanel = (LinearLayout) itemView.findViewById(R.id.albumPanel);
+            albumPanel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onAlbumClick(album.getName());

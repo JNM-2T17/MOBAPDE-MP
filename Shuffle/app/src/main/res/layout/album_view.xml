@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/albumPanel">
         <ImageView
             android:layout_width="66.6666666666dp"
             android:layout_height="66.666666666dp"

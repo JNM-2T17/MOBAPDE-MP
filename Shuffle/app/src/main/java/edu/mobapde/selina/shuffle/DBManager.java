@@ -93,7 +93,7 @@ public class DBManager extends SQLiteOpenHelper {
     public void addScore(SQLiteDatabase db,int mode, int type, String value, int score) {
         ContentValues cv = new ContentValues();
         cv.put(Score.COLUMN_SCORE, score);
-        cv.put(Score.COLUMN_TYPE, type);
+        cv.put(Score.COLUMN_TYPE, mode);
         switch(type) {
             case BuildPlaylistActivity.PLAYLIST:
                 cv.put(Score.COLUMN_PLAYLIST,Integer.parseInt(value));

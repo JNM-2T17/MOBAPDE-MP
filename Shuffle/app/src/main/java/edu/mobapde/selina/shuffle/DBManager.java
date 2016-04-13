@@ -16,7 +16,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String SCHEMA = "db_shuffle";
 
     public DBManager(Context context) {
-        super(context, SCHEMA, null, 8);
+        super(context, SCHEMA, null, 9);
     }
 
     @Override
@@ -47,6 +47,7 @@ public class DBManager extends SQLiteOpenHelper {
                 "    " + Score.COLUMN_MODE + " INTEGER NOT NULL," +
                 "    status INTEGER DEFAULT 1," +
                 "    dateAdded DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                "    uploaded INTEGER DEFAULT 0," +
                 "    FOREIGN KEY(" + Score.COLUMN_PLAYLIST + ") " +
                 "       REFERENCES sh_playlist(" + Playlist.COLUMN_ID + ")" +
                 ");");
@@ -100,6 +101,7 @@ public class DBManager extends SQLiteOpenHelper {
         switch(type) {
             case BuildPlaylistActivity.PLAYLIST:
                 cv.put(Score.COLUMN_PLAYLIST,Integer.parseInt(value));
+                cv.put("uploaded",1);
                 break;
             case BuildPlaylistActivity.ALBUM:
                 cv.put(Score.COLUMN_ALBUM,value);
@@ -141,6 +143,41 @@ public class DBManager extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         return scores;
+    }
+
+    public ArrayList<Score> getScoresForUpload() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(Score.TABLE, null, "uploaded = ?", new String[] {"0"}, null, null
+                ,Score.COLUMN_SCORE + " DESC");
+        ArrayList<Score> scores = new ArrayList<Score>();
+        if( c.moveToFirst()) {
+            do {
+                Score s = new Score(c.getInt(c.getColumnIndex(Score.COLUMN_SCORE))
+                        ,c.getInt(c.getColumnIndex(Score.COLUMN_TYPE)));
+                boolean isArtist =  !c.isNull(c.getColumnIndex(Score.COLUMN_ARTIST));
+                boolean isAlbum =  !c.isNull(c.getColumnIndex(Score.COLUMN_ALBUM));
+                boolean isPlaylist =  !c.isNull(c.getColumnIndex(Score.COLUMN_PLAYLIST));
+                if( isArtist ) {
+                    s.setArtist(c.getString(c.getColumnIndex(Score.COLUMN_ARTIST)));
+                } else if( isAlbum ) {
+                    s.setAlbum(c.getString(c.getColumnIndex(Score.COLUMN_ALBUM)));
+                } else if( isPlaylist ){
+                    s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
+                }
+                scores.add(s);
+            }while(c.moveToNext());
+        }
+        return scores;
+    }
+
+    public int setAllUploaded() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("uploaded","1");
+
+        return db.update(Score.TABLE,cv,"uploaded = ?",new String[] {"0"});
     }
 
     public ArrayList<Score> getScores(int gameType) {

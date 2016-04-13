@@ -3,6 +3,7 @@ package edu.mobapde.selina.shuffle;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by XPS 13 on 4/13/2016.
@@ -56,6 +67,7 @@ public class LeaderboardArrayFragment extends Fragment {
         }
         Resources res = getResources();
         la = new LeaderboardArrayAdapter(res,gameMode);
+        (new ScoreRetriever()).execute();
     }
 
     @Override
@@ -67,6 +79,36 @@ public class LeaderboardArrayFragment extends Fragment {
         leaderboardView.setAdapter(la);
         leaderboardView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         return v;
+    }
+
+    class ScoreRetriever extends AsyncTask<Integer,Void,Score[]> {
+
+        @Override
+        protected Score[] doInBackground(Integer... params) {
+            OkHttpClient ohc = new OkHttpClient();
+            RequestBody rb = new FormBody.Builder()
+                                .add("gametype",params[0].toString())
+                                .add("request","getTopScores")
+                                .build();
+
+            Request request = new Request.Builder()
+                                .url("http://192.168.173.1/Shuffle")
+                                .post(rb)
+                                .build();
+            try {
+                Response response = ohc.newCall(request).execute();
+                return (new Gson()).fromJson(response.body().string(),Score[].class);
+            } catch(IOException ioe) {
+                ioe.printStackTrace();
+            }
+            return new Score[0];
+        }
+
+        @Override
+        protected void onPostExecute(Score[] scores) {
+            super.onPostExecute(scores);
+            la.setArray(scores);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

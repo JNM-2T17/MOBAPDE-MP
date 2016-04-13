@@ -44,6 +44,30 @@ public class Score {
         this.gameType = gameType;
     }
 
+    public int getGameType() {
+        return gameType;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public int getPlaylist() {
+        return playlist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
     public int gameType() { return gameType; }
 
     public String artist() {

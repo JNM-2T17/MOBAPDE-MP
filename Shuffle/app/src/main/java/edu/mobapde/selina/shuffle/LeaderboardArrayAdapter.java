@@ -21,7 +21,14 @@ public class LeaderboardArrayAdapter extends RecyclerView.Adapter<LeaderboardArr
     public LeaderboardArrayAdapter (Resources res, int gameMode){
         this.res = res;
         this.gameMode = gameMode;
-        this.scoreArr = new Score[]{new Score(420, "Hardcoded Playlist in Adapter", true, Score.TYPE_ARTIST)};
+        this.scoreArr = new Score[0];
+    }
+
+    public void setArray(Score[] array) {
+        this.scoreArr = array;
+        for(int i = 0; i < getItemCount(); i++) {
+            notifyItemChanged(i);
+        }
     }
 
     @Override
@@ -38,7 +45,7 @@ public class LeaderboardArrayAdapter extends RecyclerView.Adapter<LeaderboardArr
 
     @Override
     public int getItemCount() {
-        return 0;
+        return scoreArr.length;
     }
 
     public class LeaderboardArrayHolder extends RecyclerView.ViewHolder {

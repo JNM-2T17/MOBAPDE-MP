@@ -72,7 +72,7 @@ public class LeaderboardArrayAdapter extends RecyclerView.Adapter<LeaderboardArr
                     leaderboardLabel.setTypeface(leaderboardLabel.getTypeface(), Typeface.ITALIC);
                     break;
                 case Score.TYPE_ARTIST:
-                    leaderboardLabel.setText("Artist" + score.artist());
+                    leaderboardLabel.setText("Artist: " + score.artist());
                     break;
                 case Score.TYPE_PLAYLIST:
                     if (score.playlist() == 0){
@@ -85,7 +85,7 @@ public class LeaderboardArrayAdapter extends RecyclerView.Adapter<LeaderboardArr
                     }
                     break;
                 case Score.TYPE_ALBUM:
-                    leaderboardLabel.setText("Album " + score.album());
+                    leaderboardLabel.setText("Album: " + score.album());
                     break;
             }
             leaderboardScore.setText(score.score() + "");

@@ -67,7 +67,7 @@ public class LeaderboardArrayFragment extends Fragment {
         }
         Resources res = getResources();
         la = new LeaderboardArrayAdapter(res,gameMode);
-        (new ScoreRetriever()).execute();
+        (new ScoreRetriever()).execute(gameMode);
     }
 
     @Override
@@ -87,17 +87,17 @@ public class LeaderboardArrayFragment extends Fragment {
         protected Score[] doInBackground(Integer... params) {
             OkHttpClient ohc = new OkHttpClient();
             RequestBody rb = new FormBody.Builder()
-                                .add("gametype",params[0].toString())
-                                .add("request","getTopScores")
+                                .add("gameMode", params[0].toString())
                                 .build();
 
             Request request = new Request.Builder()
-                                .url("http://192.168.173.1/Shuffle")
+                                .url("http://192.168.1.35:8080/ShuffleServer/Scores")
                                 .post(rb)
                                 .build();
             try {
                 Response response = ohc.newCall(request).execute();
-                return (new Gson()).fromJson(response.body().string(),Score[].class);
+                String str = response.body().string();
+                return (new Gson()).fromJson(str,Score[].class);
             } catch(IOException ioe) {
                 ioe.printStackTrace();
             }

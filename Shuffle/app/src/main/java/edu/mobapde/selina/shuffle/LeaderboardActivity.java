@@ -1,6 +1,7 @@
 package edu.mobapde.selina.shuffle;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LeaderboardActivity extends AppCompatActivity implements LeaderboardFragment.OnFragmentInteractionListener {
 
@@ -88,6 +99,49 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
             }
         });
 
+        (new ScoreUploader()).execute();
+    }
+
+    class ScoreUploader extends AsyncTask<Void,Void,Boolean>{
+        private DBManager dbm;
+
+        public ScoreUploader() {
+            dbm = new DBManager(getBaseContext());
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            ArrayList<Score> scores = dbm.getScoresForUpload();
+            if( scores.size() == 0 ) {
+                return false;
+            }
+            OkHttpClient ohc = new OkHttpClient();
+            RequestBody rb = new FormBody.Builder()
+                    .add("scores", (new Gson()).toJson(scores))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://192.168.1.35:8080/ShuffleServer/Put")
+                    .post(rb)
+                    .build();
+            try {
+                Response response = ohc.newCall(request).execute();
+                return new Boolean(response.body().string());
+            } catch(IOException ioe) {
+                ioe.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            Log.i("Leaderboard",aBoolean + "");
+            if( aBoolean ) {
+                dbm.setAllUploaded();
+            }
+        }
     }
 
     @Override

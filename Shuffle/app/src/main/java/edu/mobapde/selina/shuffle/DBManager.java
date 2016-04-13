@@ -140,6 +140,7 @@ public class DBManager extends SQLiteOpenHelper {
                     s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
                 }
                 scores.add(s);
+                s.setMode(c.getInt(c.getColumnIndex(Score.COLUMN_MODE)));
             }while(c.moveToNext());
         }
         return scores;
@@ -166,6 +167,7 @@ public class DBManager extends SQLiteOpenHelper {
                     s.setPlaylist(c.getInt(c.getColumnIndex(Score.COLUMN_PLAYLIST)));
                 }
                 scores.add(s);
+                s.setMode(c.getInt(c.getColumnIndex(Score.COLUMN_MODE)));
             }while(c.moveToNext());
         }
         return scores;
@@ -175,7 +177,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put("uploaded","1");
+        cv.put("uploaded", "1");
 
         return db.update(Score.TABLE,cv,"uploaded = ?",new String[] {"0"});
     }

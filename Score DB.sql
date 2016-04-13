@@ -5,27 +5,29 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema db_shuffle
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema db_shuffle
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `db_shuffle` DEFAULT CHARACTER SET utf8 ;
+USE `db_shuffle` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`score`
+-- Table `db_shuffle`.`score`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`score` (
+DROP TABLE IF EXISTS `db_shuffle`.`shf_score`;
+
+CREATE TABLE IF NOT EXISTS `db_shuffle`.`shf_score` (
   `scoreID` INT NOT NULL AUTO_INCREMENT,
   `artist` VARCHAR(45) NOT NULL,
-  `playlist` VARCHAR(45) NOT NULL,
+  `album` VARCHAR(45) NOT NULL,
   `type` INT NOT NULL,
   `score` INT NOT NULL,
   `mode` INT NOT NULL,
-  `status` INT NOT NULL,
-  `dateAdded` DATETIME NOT NULL,
+  `status` INT NOT NULL DEFAULT 1,
+  `dateAdded` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`scoreID`))
 ENGINE = InnoDB;
 

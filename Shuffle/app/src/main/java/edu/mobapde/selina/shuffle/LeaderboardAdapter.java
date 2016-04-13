@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +78,6 @@ public class LeaderboardAdapter extends CursorRecyclerViewAdapter<LeaderboardAda
 
         public void setScore(Score score){
             this.score = score;
-            Log.i("game type","game type" + score.gameType());
             switch(score.gameType()){
                 case Score.TYPE_WHOLE:
                     leaderboardLabel.setText("All songs");

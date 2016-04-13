@@ -36,7 +36,6 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println(request.getServletPath());
 		switch(request.getServletPath()) {
 			case "/Scores":
 				Score[] s = ScoreManager.getScores(request.getParameter("gameMode"));
@@ -46,7 +45,6 @@ public class Controller extends HttpServlet {
 			case "/Put":
 				Score[] scores = (new Gson()).fromJson(request.getParameter("scores"), Score[].class);
 				reply = ScoreManager.addScores(scores) + "";
-				System.out.println(reply);
 				response.getWriter().print(reply);
 				break;
 			default:

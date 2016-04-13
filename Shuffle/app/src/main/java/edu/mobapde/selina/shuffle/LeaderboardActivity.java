@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,7 +14,6 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -41,10 +39,6 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
         DBManager dbm = new DBManager(getBaseContext());
-        List<Score> scores = dbm.getScores();
-        for(Score s : scores) {
-            Log.i("LeaderboardActivity",s.toString() );
-        }
 
         choicePanel = (LinearLayout) findViewById(R.id.choicePanel);
         songRushButton = (Button) findViewById(R.id.songRushButton);
@@ -137,7 +131,6 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Log.i("Leaderboard",aBoolean + "");
             if( aBoolean ) {
                 dbm.setAllUploaded();
             }

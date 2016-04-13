@@ -82,7 +82,7 @@ public class DBManager extends SQLiteOpenHelper {
             addPlaylistSub(db,p.name(),songs);
         }
         for( Score s : scores ) {
-            addScore(db,GameModeDialog.SONG_RUSH,s.getListType(),s.value(),s.score());
+            addScore(db,s.getMode(),s.getListType(),s.value(),s.score());
         }
     }
 

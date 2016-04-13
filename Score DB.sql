@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`score` (
   `mode` INT NOT NULL,
   `status` INT NOT NULL,
   `dateAdded` DATETIME NOT NULL,
-  `uploaded` INT NOT NULL,
   PRIMARY KEY (`scoreID`))
 ENGINE = InnoDB;
 

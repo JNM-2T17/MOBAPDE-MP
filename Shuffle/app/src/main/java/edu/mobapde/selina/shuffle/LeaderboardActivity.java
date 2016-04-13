@@ -17,9 +17,13 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
     private LinearLayout choicePanel;
     private Button songRushButton;
     private Button timeAttackButton;
+    private Button globalRushButton;
+    private Button globalAttackButton;
 
     private LeaderboardFragment songRushFragment;
     private LeaderboardFragment timeAttackFragment;
+    private LeaderboardArrayFragment globalRushFragment;
+    private LeaderboardArrayFragment globalAttackFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,13 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
         choicePanel = (LinearLayout) findViewById(R.id.choicePanel);
         songRushButton = (Button) findViewById(R.id.songRushButton);
         timeAttackButton = (Button) findViewById(R.id.timeAttackButton);
+        globalRushButton = (Button) findViewById(R.id.globalRushButton);
+        globalAttackButton = (Button) findViewById(R.id.globalAttackButton);
 
         songRushFragment = LeaderboardFragment.newInstance(Score.SONG_RUSH);
         timeAttackFragment = LeaderboardFragment.newInstance(Score.TIME_ATTACK);
+        globalRushFragment = LeaderboardArrayFragment.newInstance(Score.SONG_RUSH);
+        globalAttackFragment = LeaderboardArrayFragment.newInstance(Score.TIME_ATTACK);
         getSupportFragmentManager().beginTransaction().add(R.id.leaderboardFragment,songRushFragment)
                 .commit();
 
@@ -60,6 +68,26 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
             }
         });
 
+        globalRushButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.leaderboardFragment, globalRushFragment)
+                        .commit();
+                swapColors(globalRushFragment);
+            }
+        });
+
+        globalAttackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.leaderboardFragment, globalAttackFragment)
+                        .commit();
+                swapColors(globalAttackFragment);
+            }
+        });
+
     }
 
     @Override
@@ -72,17 +100,49 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
                 timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
             } else {
                 songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
                 timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
             }
         } else if( fragment.equals(timeAttackFragment)/*fragment instanceof AlbumFragment*/ ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
                 timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2,null));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
             } else {
                 songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
                 timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        } else if( fragment.equals(globalRushFragment)/*fragment instanceof AlbumFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+            } else {
+                songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+            }
+        } else if( fragment.equals(globalAttackFragment)/*fragment instanceof AlbumFragment*/ ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1,null));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1, null));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2, null));
+            } else {
+                songRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                timeAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalRushButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_1));
+                globalAttackButton.setBackground(getResources().getDrawable(R.drawable.background_gradient_2));
             }
         }
     }

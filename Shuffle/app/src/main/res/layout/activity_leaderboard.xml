@@ -18,8 +18,7 @@
             android:gravity="center"
             android:drawableTop="@android:drawable/ic_menu_sort_by_size"
             android:textSize="18sp"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:padding="@dimen/activity_horizontal_margin"
             android:text="Song Rush"
             android:background="@drawable/background_gradient_2"/>
         <Button
@@ -30,9 +29,33 @@
             android:gravity="center"
             android:drawableTop="@android:drawable/ic_media_ff"
             android:textSize="18sp"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
             android:text="Time Attack"
+            android:background="@drawable/background_gradient_1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/globalRushButton"
+            android:gravity="center"
+            android:drawableTop="@android:drawable/ic_menu_compass"
+            android:textSize="18sp"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:text="Global Rush"
+            android:background="@drawable/background_gradient_1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/globalAttackButton"
+            android:gravity="center"
+            android:drawableTop="@android:drawable/ic_menu_mapmode"
+            android:textSize="18sp"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:text="Global Attack"
             android:background="@drawable/background_gradient_1"/>
     </LinearLayout>
 

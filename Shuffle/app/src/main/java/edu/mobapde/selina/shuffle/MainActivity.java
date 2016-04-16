@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static String ip = "127.0.0.1";
+
     private TextView levelLabelMain;
     private Button playButton;
     private Button createButton;
@@ -83,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SetLevelDialog sld = new SetLevelDialog();
                 sld.show(getFragmentManager(), "");
+            }
+        });
+        settingsButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                IPDialog ipd = new IPDialog();
+                ipd.show(getFragmentManager(),"");
+                return true;
             }
         });
 

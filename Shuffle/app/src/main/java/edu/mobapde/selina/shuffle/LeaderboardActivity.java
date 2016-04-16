@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -110,13 +111,15 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
             if( scores.size() == 0 ) {
                 return false;
             }
-            OkHttpClient ohc = new OkHttpClient();
+            OkHttpClient ohc = new OkHttpClient.Builder()
+                    .connectTimeout(100, TimeUnit.SECONDS)
+                    .build();
             RequestBody rb = new FormBody.Builder()
                     .add("scores", (new Gson()).toJson(scores))
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://192.168.1.35:8080/ShuffleServer/Put")
+                    .url("http://" + MainActivity.ip + ":8080/ShuffleServer/Put")
                     .post(rb)
                     .build();
             try {
@@ -131,7 +134,7 @@ public class LeaderboardActivity extends AppCompatActivity implements Leaderboar
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if( aBoolean ) {
+            if( aBoolean != null && aBoolean ) {
                 dbm.setAllUploaded();
             }
         }

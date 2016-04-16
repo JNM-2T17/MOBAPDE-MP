@@ -74,9 +74,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
             this.album = album;
             albumLabel.setText(album.getName());
             artistLabel.setText(album.getArtistName());
-            if (album.getAlbumArt() != null){
-                albumArt.setImageBitmap(album.getAlbumArt());
-            } else {
+//            if (album.getAlbumArt() != null){
+//                albumArt.setImageBitmap(album.getAlbumArt());
+//            } else {
                 Drawable defaultAlbumArt;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     defaultAlbumArt = res.getDrawable(R.drawable.default_album_art, null);
@@ -84,7 +84,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
                     defaultAlbumArt = res.getDrawable(R.drawable.default_album_art);
                 }
                 albumArt.setImageBitmap(drawableToBitmap(defaultAlbumArt));
-            }
+//            }
         }
     }
 

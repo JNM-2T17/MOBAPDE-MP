@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -85,13 +86,15 @@ public class LeaderboardArrayFragment extends Fragment {
 
         @Override
         protected Score[] doInBackground(Integer... params) {
-            OkHttpClient ohc = new OkHttpClient();
+            OkHttpClient ohc = new OkHttpClient.Builder()
+                    .connectTimeout(100, TimeUnit.SECONDS)
+                    .build();
             RequestBody rb = new FormBody.Builder()
                                 .add("gameMode", params[0].toString())
                                 .build();
 
             Request request = new Request.Builder()
-                                .url("http://192.168.1.35:8080/ShuffleServer/Scores")
+                                .url("http://" + MainActivity.ip + ":8080/ShuffleServer/Scores")
                                 .post(rb)
                                 .build();
             try {
